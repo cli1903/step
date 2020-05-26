@@ -1,18 +1,29 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+#bio {
+  float: left;
+  padding: 20px;
+  width: 60%
+}
+
+#side-bar {
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #E8E8E8;
+  width: 30%;
+}
+
+#nav {
+    width: 95%;
+    margin: 10px;
+    background-color: #E8E8E8;
 }
 
 #greeting-container {
-  margin-top: 20px;
-}
-
-#port_section {
-    color: blue;
+    margin-top: 10px;
 }
 
 #contact {
-    text-align: center;
+    margin-top: 500px
 }
+
 
