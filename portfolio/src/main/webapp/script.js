@@ -19,10 +19,15 @@ function addRandomGreeting() {
   const greetings =
       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
+  const facts = 
+      ['I live in NY.', 'I have a yellow lab named Coco.', 'I hate the cold.', 'I like reading.'];
+
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
+  const fact = facts[Math.floor(Math.random() * facts.length)];
+
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  greetingContainer.innerText = fact;//greeting;
 }
