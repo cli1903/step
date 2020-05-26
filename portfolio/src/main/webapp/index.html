@@ -8,23 +8,37 @@
   </head>
   <body>
     <div id="content">
-      <h1 id="port_section">Cindy's Portfolio</h1>
-      <p><a href="projects.html"> My Projects</a></p>
-      <p>I am a rising junior at Brown University, studying Applied Math - Computer Science. My academic interests lie primarily in machine learning and data science.
-          <br> In my free time, I enjoy reading, listening to music, and hanging out with my dog. I adore giant pandas and hope to one day visit the panda sanctuary in Sichuan, China (along with a million other places).
-      </p>
-      <img src="/images/surprise-panda.jpg" alt="panda image" width=500px height=500px>
-      <p>Click here to get a random place I want to travel to:</p>
-      <button onclick="addRandomDestination()">Wanderlust</button>
-      <div id="travel-container"></div>
+      <div id = 'title'>
+        <h1 id = 'port_section'>Cindy's Portfolio</h1>
+      </div>
+      
+      <div id = 'nav'>
+        <p><a href = 'projects.html'> My Projects</a></p>
+      </div>
+
+      <div id = 'bio'>
+        <p>I am a rising junior at Brown University, studying Applied Math - Computer Science. My academic interests lie primarily in machine learning and data science.
+            <br> In my free time, I enjoy reading, listening to music, and hanging out with my dog. I adore giant pandas and hope to one day visit the panda sanctuary in Sichuan, China (along with a million other places).
+        </p>
+        <img src = '/images/surprise-panda.jpg' alt = 'panda image' width = 500px height = 500px>
+      </div>
     </div>
-    <div id="contact">
-        <hr>
-        <h3> Contact Info </h3> 
-        <p> <b>Email:</b> cindy_li@brown.edu <br>
-            <b>Cell:</b>1-123-456-7890<br>
-            <b>LinkedIn:</b> <a href="https://www.linkedin.com/in/cindy-li-2022/">https://www.linkedin.com/in/cindy-li-2022/</a>
-        </p> 
+
+    <div id = 'side-bar'>
+        <div id = 'button-stuff'>
+                <p>Click here to get a random place I want to travel to:</p>
+                <button onclick="addRandomGreeting()">Wanderlust</button>
+                <div id="greeting-container"></div>
+        </div>
+
+        <div id = 'contact'>
+            <hr>
+            <h3> Contact Info </h3> 
+            <p> <b>Email:</b> cindy_li@brown.edu <br>
+                <b>Cell:</b> 631-406-3344 <br>
+                <b>LinkedIn:</b> <a href = 'https://www.linkedin.com/in/cindy-li-2022/'>https://www.linkedin.com/in/cindy-li-2022/</a>
+            </p> 
+        </div>
     </div>
   </body>
 </html>
