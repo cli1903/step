@@ -7,32 +7,45 @@
         <script src="script.js"></script>
     </head>
     <body>
-        <div id="proj">
-            <h1> Projects </h1>
-            <a href="https://github.com/cli1903"> github </a>
-            <h2> Research </h2>
-            <p> <b> Mining misdiagnosis patterns from biomedical literature. </b>
-                <ul>
-                    <li>extracted misdiagnosis patterns from PubMed article database using python</li>
-                    <li>used QuickUMLS library to match disease names and NetworkX to graph and analyze misdiagnoses</li>
-                </ul>
-                <br>
-                <b> Phagocytes from Mice Lacking the Sts Phosphatases Have an Enhanced Antifungal Response to Candida albicans. </b> 
-            </p>
+        <div class = 'nav'>
+                <a href='index.html'>Home</a>  
+                <a href='index.html#content'>About Me</a> 
+                <a href = 'projects.html' class='active'> My Projects</a> 
+        </div>
 
-            <h2> Coursework </h2>
-            <p> <b> CSCI1951a: Data Science - Predicting NFL Game Wins </b> 
-                <ul>
-                    <li> used SportRadar API to get NFL football game data for each team for each game </li>
-                    <li> used the game data to train machine learning models to predict whether the home team would win based on the two teams' average stats from their previous 5 games </li>
-                </ul>
-                <br>
-                <a href="https://github.com/cli1903/monkey-business"><b> CSCI1470: Deep Learning - Predicting Primate Upper Limb Movements Via Neuron Firing Rates is No Monkey Business</b> </a>
-                <ul>
-                    <li> used data recorded from research lab at Brown University </li>
-                    <li> used TensorFlow to train recurrent neural networks to see whether they could accurately predict a monkey's limb movement based on their neuron firing rates </li>
-                </ul>
-            </p>
-        </div> 
+        <div id = 'proj'>
+            <h1 class='title'> Projects </h1>
+
+            <a href = 'https://github.com/cli1903' id='github'> github </a>
+        
+
+            <div id='research'>
+                <h2> Research </h2>
+                <p> <b> Mining misdiagnosis patterns from biomedical literature. </b>
+                    <ul>
+                        <li>extracted misdiagnosis patterns from PubMed article database using python</li>
+                        <li>used QuickUMLS library to match disease names and NetworkX to graph and analyze misdiagnoses</li>
+                    </ul>
+                    <br>
+                    <b> Phagocytes from Mice Lacking the Sts Phosphatases Have an Enhanced Antifungal Response to Candida albicans. </b> 
+                </p>
+            </div>
+
+            <div id='course'>
+                <h2> Coursework </h2>
+                <p> <b> CSCI1951a: Data Science - Predicting NFL Game Wins </b> 
+                    <ul>
+                        <li> used SportRadar API to get NFL football game data for each team for each game </li>
+                        <li> used the game data to train machine learning models to predict whether the home team would win based on the two teams' average stats from their previous 5 games </li>
+                    </ul>
+                    <br>
+                    <a href="https://github.com/cli1903/monkey-business"><b> CSCI1470: Deep Learning - Predicting Primate Upper Limb Movements Via Neuron Firing Rates is No Monkey Business</b> </a>
+                    <ul>
+                        <li> used data recorded from research lab at Brown University </li>
+                        <li> used TensorFlow to train recurrent neural networks to see whether they could accurately predict a monkey's limb movement based on their neuron firing rates </li>
+                    </ul>
+                </p>
+            </div>
+        </div>
     </body>
 </html>

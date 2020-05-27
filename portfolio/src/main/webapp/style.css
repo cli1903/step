@@ -1,18 +1,56 @@
 
-#nav {
-    overflow: hidden;
-    width: 95%;
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    width:100%;
+    overflow-x:hidden;
+}
+
+.home {
+    margin:0;
+    padding:0;
+    width: 100%;
+    height:100%;
+    background-color: black;
+    vertical-align: top;
+}
+
+
+.dot {
+    margin: auto;
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    transform: translate(0, 50%);
+}
+
+.dot p {
+    color: black;
+    text-align: center;
+    vertical-align: center;
+    transform: scale(6)translate(0, 100%);
+}
+
+
+
+.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
     background-color: #E8E8E8;
 }
 
-#nav a {
+.nav a {
     display: block;
     float: left;
     text-align: center;
     padding: 10px;
 }
 
-#nav a:hover {
+.nav a:hover {
     background-color: #CBCAC8
 }
 
@@ -26,30 +64,40 @@
 
 #bio {
   float: left;
-  padding: 20px;
-  width: 55%
+  padding-left: 20px;
+  width: 60%
 }
 
+.title {
+    width: 97%;
+    background-color: #E8E8E8;
+    padding: 10px;
+}
 
 #side-bar {
   float: left;
-  margin-top: 30px;
   margin-left: 5%;
-  padding-left: 20px;
-  padding-right: 20px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: #E8E8E8;
   width: 30%;
 }
 
-
 #greeting-container {
     margin-top: 10px;
+    margin-left: 20px;
 }
 
 #contact {
-    margin-top: 450px
+    margin-top: 450px;
 }
 
+#proj {
+    margin: 20px;
+    margin-top: 50px;
+}
 
-
-
+#proj a {
+    padding: 10px;
+}
