@@ -20,9 +20,9 @@ function addRandomDestination() {
       ['Tokyo', 'London', 'Rome', 'New Amsterdam', 'Taipei', 'Sichuan'];
 
   // Pick a random travel destination.
-  const destination = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
+  const placeToVisit = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
 
   // Add it to the page.
   const travelContainer = document.getElementById('travel-container');
-  greetingContainer.innerText = destination;
+  greetingContainer.innerText = placeToVisit;
 }
