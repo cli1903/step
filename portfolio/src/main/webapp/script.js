@@ -31,9 +31,9 @@ function addRandomDestination() {
   
 
   const img = document.getElementById('visit-pic');
-  
+
   img.src = visit_pics[placeToVisit];
-  img.alt = placeToVisit + '-image';
+  img.alt = 'image of ${placeToVisit}';
 
   travelContainer.innerText = placeToVisit;
   
