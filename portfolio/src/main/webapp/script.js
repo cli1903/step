@@ -15,19 +15,14 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  const visit = 
+function addRandomDestination() {
+  const placesToVisit = 
       ['Tokyo', 'London', 'Rome', 'New Amsterdam', 'Taipei', 'Sichuan'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  const fact = visit[Math.floor(Math.random() * visit.length)];
+  // Pick a random travel destination.
+  const destination = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = fact;//greeting;
+  const travelContainer = document.getElementById('travel-container');
+  greetingContainer.innerText = destination;
 }
