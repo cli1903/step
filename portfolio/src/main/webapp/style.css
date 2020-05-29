@@ -1,33 +1,33 @@
 
-html, body {
-    margin:0;
-    padding:0;
-    height:100%;
-    width:100%;
-    overflow-x:hidden;
+html, 
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
 .parallax {
-    margin:0;
-    padding:0;
-    width: 100%;
-    height:100%;
     background-image: url(https://cdn.pixabay.com/photo/2015/03/26/10/03/downtown-690826_960_720.jpg);
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    
+    margin: 0;
+    padding: 0;
+    height:100%;
+    width: 100%;
 }
 
 
 .dot {
-    margin: auto;
-    width: 300px;
-    height: 300px;
     background-color: black;
-    border-radius: 50%;   
+    border-radius: 50%;
+    margin: auto;
+    height: 300px;
+    width: 300px;
     position: relative;
     top: -50%;
 }
@@ -42,22 +42,22 @@ html, body {
 }
 
 .border {
-    margin: auto;
-    width: 90%;
-    height: 80%;
     border-style: solid;
     border-color: white;
     border-width: 5px;
+    margin: auto;
+    width: 90%;
+    height: 80%;
     position: relative;
     top: 10%;
 }
 
 
 .nav {
+    background-color: #e8e8e8;
+    width: 100%;
     position: fixed;
     top: 0;
-    width: 100%;
-    background-color: #E8E8E8;
 }
 
 .nav a {
@@ -68,11 +68,11 @@ html, body {
 }
 
 .nav a:hover {
-    background-color: #CBCAC8
+    background-color: #cbcac8
 }
 
 .active {
-    background-color: #B9B8B7
+    background-color: #b9b8b7
 }
 
 #content {
@@ -87,7 +87,7 @@ html, body {
 
 .title {
     margin-top: 30px;
-    background-color: #E8E8E8;
+    background-color: #e8e8e8;
     padding: 10px;
 }
 
@@ -98,7 +98,7 @@ html, body {
   margin-bottom: 20px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #E8E8E8;
+  background-color: #e8e8e8;
   width: 30%;
 }
 
@@ -112,30 +112,30 @@ html, body {
 }
 
 #proj {
-    margin: 20px;
-    margin-top: 50px;
+    margin: 50px, 20px, 20px;
 }
 
 #github {
     padding: 10px;
 }
 
-#research, #course {
+#research, 
+#course {
     margin: 10px;
 }
 
 .subheading {
-    background-color: #E8E8E8;
+    background-color: #e8e8e8;
     padding: 10px;
 }
 
-#research p, #course p {
+#research p, 
+#course p {
     margin: 10px;
 }
 
 #image_content {
-    margin: 20px;
-    margin-top: 50px;
+    margin: 50px, 20px, 20px;
 }
 
 .img_section {
@@ -148,7 +148,8 @@ html, body {
     clear: both;
 }
 
-.img_section img, .img_section div {
+.img_section img, 
+.img_section div {
     padding-left: 10px
 }
 
@@ -168,7 +169,6 @@ html, body {
 .photo img:hover {
     opacity: 0.6;
 }
-
 
 
 .photo:hover .overlay-text {
