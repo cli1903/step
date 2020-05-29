@@ -85,7 +85,6 @@ html, body {
 
 .title {
     margin-top: 30px;
-    width: 97%;
     background-color: #E8E8E8;
     padding: 10px;
 }
@@ -116,4 +115,26 @@ html, body {
 
 #proj a {
     padding: 10px;
+}
+
+#research, #course {
+    margin: 10px;
+}
+
+.subheading {
+    background-color: #E8E8E8;
+    padding: 10px;
+}
+
+#research p, #course p {
+    margin: 10px;
+}
+
+#image_content {
+    margin: 20px;
+    margin-top: 50px;
+}
+
+#travels, #food, #coco {
+    margin: 20px;
 }
