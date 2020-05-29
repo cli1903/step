@@ -19,7 +19,6 @@ function addRandomDestination() {
   const placesToVisit = 
       ['Tokyo', 'London', 'Rome', 'Amsterdam', 'Taipei', 'Sichuan'];
 
-
   const visit_pics = {
     'Tokyo': 'https://cdn.pixabay.com/photo/2020/01/15/19/03/shinjuku-4768674_960_720.jpg',
     'London': 'https://c1.wallpaperflare.com/preview/271/1022/559/westminster-palace-london-city.jpg',
@@ -31,7 +30,6 @@ function addRandomDestination() {
   }
 
   // Pick a random travel destination.
-
   const placeToVisit = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
 
   // Add it to the page.
@@ -40,9 +38,8 @@ function addRandomDestination() {
 
   const img = document.getElementById('visit-pic');
 
-  img.src = visit_pics[placeToVisit];
+  img.src = visitPics[placeToVisit];
   img.alt = 'image of ${placeToVisit}';
 
   travelContainer.innerText = placeToVisit;
-  
 }
