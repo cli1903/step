@@ -38,4 +38,5 @@ function addRandomDestination() {
 
   travelContainer.innerText = placeToVisit;
   
+
 }
