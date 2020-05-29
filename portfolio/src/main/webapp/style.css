@@ -27,13 +27,9 @@ html, body {
     width: 500px;
     height: 500px;
     background-color: black;
-    border-radius: 50%;
-<<<<<<< HEAD
-    transform: translate(0, 75%);
-=======
+    border-radius: 50%;   
     position: relative;
-    top: -50%;
->>>>>>> extra
+    top: -675px;
 }
 
 
@@ -118,10 +114,9 @@ html, body {
 #proj {
     margin: 20px;
     margin-top: 50px;
-<<<<<<< HEAD
 }
 
-#proj a {
+#github {
     padding: 10px;
 }
 
@@ -144,6 +139,6 @@ html, body {
 }
 
 #travels, #food, #coco {
-    margin: 20px;
+    margin-left: 20px;
 }
 

@@ -26,7 +26,8 @@ function addRandomDestination() {
     'Rome': 'https://cdn.pixabay.com/photo/2018/07/20/14/02/rome-3550739_960_720.jpg', 
     'Amsterdam': 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Amsterdam_De_Wallen_6.jpg', 
     'Taipei': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Taipei_skyline_cityscape_at_night_with_full_moon.jpg', 
-    'Sichuan': 'https://www.goodfreephotos.com/albums/china/sichuan/other/Guangfu-pavilion-with-summit-visible-in-background-in-mount-emei-sichuan-china.jpg'
+    'Sichuan': 'https://www.goodfreephotos.com/albums/china/sichuan/other/Guangfu-pavilion-with-summit-visible-in- \
+                background-in-mount-emei-sichuan-china.jpg'
   }
 
   // Pick a random travel destination.
