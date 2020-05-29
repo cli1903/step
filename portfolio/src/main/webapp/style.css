@@ -28,7 +28,12 @@ html, body {
     height: 500px;
     background-color: black;
     border-radius: 50%;
+<<<<<<< HEAD
     transform: translate(0, 75%);
+=======
+    position: relative;
+    top: -50%;
+>>>>>>> extra
 }
 
 
@@ -42,12 +47,13 @@ html, body {
 
 .border {
     margin: auto;
-    width: 2200px;
-    height: 1100px;
+    width: 90%;
+    height: 80%;
     border-style: solid;
     border-color: white;
     border-width: 5px;
-    transform: translate(0, -37%)
+    position: relative;
+    top: 10%;
 }
 
 
@@ -89,6 +95,7 @@ html, body {
     padding: 10px;
 }
 
+
 #side-bar {
   float: left;
   margin-left: 5%;
@@ -111,6 +118,7 @@ html, body {
 #proj {
     margin: 20px;
     margin-top: 50px;
+<<<<<<< HEAD
 }
 
 #proj a {
@@ -138,3 +146,4 @@ html, body {
 #travels, #food, #coco {
     margin: 20px;
 }
+
