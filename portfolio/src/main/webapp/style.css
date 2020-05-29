@@ -138,6 +138,41 @@ html, body {
     margin-top: 50px;
 }
 
-#travels, #food, #coco {
+.img_section {
     margin-left: 20px;
 }
+
+.img_section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.img_section img, .img_section div {
+    padding-left: 10px
+}
+
+.photo {
+    float: left;
+    width: 20%;
+}
+
+.photo .overlay-text {
+    background-color: black;
+    color: white;
+    opacity: 0;
+    position: relative;
+    top: -25px;
+}
+
+.photo img:hover {
+    opacity: 0.6;
+}
+
+
+
+.photo:hover .overlay-text {
+    opacity: 1;
+}
+
+
