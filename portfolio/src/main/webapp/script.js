@@ -31,6 +31,7 @@ function addRandomDestination() {
   }
 
   // Pick a random travel destination.
+
   const placeToVisit = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
 
   // Add it to the page.
