@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random travel destination and image of destination to the page.
  */
 function addRandomDestination() {
   const placesToVisit = 
@@ -23,18 +23,19 @@ function addRandomDestination() {
     'London': 'https://c1.wallpaperflare.com/preview/271/1022/559/westminster-palace-london-city.jpg',
     'Rome': 'https://cdn.pixabay.com/photo/2018/07/20/14/02/rome-3550739_960_720.jpg', 'Amsterdam': 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Amsterdam_De_Wallen_6.jpg', 'Taipei': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Taipei_skyline_cityscape_at_night_with_full_moon.jpg', 'Sichuan': 'https://www.goodfreephotos.com/albums/china/sichuan/other/Guangfu-pavilion-with-summit-visible-in-background-in-mount-emei-sichuan-china.jpg'}
 
-  // Pick a random travel destination
 
-  const destination = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
+  // Pick a random destintion.
+  const placeToVisit = placesToVisit[Math.floor(Math.random() * placesToVisit.length)];
 
   // Add it to the page.
   const travelContainer = document.getElementById('travel-container');
   
 
   const img = document.getElementById('visit-pic');
-  img.src = visit_pics[destination];
-  img.alt = destination + '-image';
 
-  travelContainer.innerText = destination;
+  img.src = visit_pics[placeToVisit];
+  img.alt = 'image of ${placeToVisit}';
+
+  travelContainer.innerText = placeToVisit;
   
 }
