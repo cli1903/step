@@ -155,7 +155,8 @@ body {
 
 .photo {
     float: left;
-    width: 20%;
+    max-height: 450px;
+    max-width: 450px;
 }
 
 .photo .overlay-text {
