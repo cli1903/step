@@ -49,3 +49,14 @@ function addRandomDestination() {
 
   travelContainer.innerText = placeToVisit;
 }
+
+
+/** 
+ * adds response from servlet
+ */
+
+function getGreeting() {
+    fetch('/data').then((response) => response.text()).then((greeting) => {
+        document.getElementById('greeting-container').innerHTML = greeting;
+    });
+}
