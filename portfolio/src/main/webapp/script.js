@@ -55,8 +55,17 @@ function addRandomDestination() {
  * adds response from servlet
  */
 
-function getGreeting() {
-    fetch('/data').then((response) => response.text()).then((greeting) => {
-        document.getElementById('greeting-container').innerHTML = greeting;
+function getComments() {
+    fetch('/data').then((response) => response.json()).then((obj) => {
+        commentContainer = document.getElementById('comments-container');
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            commentContainer.appendChild(createListElem(obj[i]));
+        }
     });
+}
+
+function createListElem(text) {
+    const liElem = document.createElement('li');
+    liElem.innerText = text;
+    return liElem;
 }
