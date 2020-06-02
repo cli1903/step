@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Comments </title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+    </head>
+
+    <body>
+        <div class="nav">
+          <a href="index.html#home" class="active"> Home </a>
+          <a href="index.html#content"> About Me </a>
+          <a href="projects.html"> My Projects </a>
+          <a href="images.html"> My Gallery </a>
+        </div>
+
+        <div id="content">
+            <h1 class="title"> Comments </h1>
+
+            <div id="comments-container"></div>
+
+            <form action="/data" method="POST">
+              <p> Leave a comment! </p>
+              <textarea name="comment"></textarea>
+              <input type="submit">
+            </form>
+        </div>
+
