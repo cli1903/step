@@ -7,7 +7,7 @@
         <script src="script.js"></script>
     </head>
 
-    <body onload="getComments()">
+    <body onload="setComments()">
         <div class="nav">
           <a href="index.html#home" class="active"> Home </a>
           <a href="index.html#content"> About Me </a>
@@ -18,7 +18,7 @@
         <div id="content">
             <h1 class="title"> Comments </h1>
 
-            <div id="comments-container"></div>
+            <div id="comments-container"> <p> Comments: </p> </div>
 
             <form action="/data" method="POST">
               <p> Leave a comment! </p>
