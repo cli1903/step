@@ -56,7 +56,7 @@ function addRandomDestination() {
  * adds response from servlet
  */
 
-function getGreeting() {
+function setGreetingsFromServer() {
   fetch('/data').then((response) => response.json()).then((obj) => {
     const greetingContainer = document.getElementById('greeting-container');
 
