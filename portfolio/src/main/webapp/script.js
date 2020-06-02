@@ -61,7 +61,7 @@ function getGreeting() {
     const greetingContainer = document.getElementById('greeting-container');
 
     for (let i = 0; i < Object.keys(obj).length; i++) {
-      greetingContainer.appendChild(createListElem(obj[i]));
+      greetingContainer.appendChild(createListElem('Hello ' + obj[i] + '!'));
     }
 
   });
