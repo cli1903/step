@@ -39,8 +39,6 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String name = names.get((int) (Math.random() * names.size()));
-
     Gson gson = new Gson();
     String json = gson.toJson(names);
 
