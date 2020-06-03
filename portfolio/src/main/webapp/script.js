@@ -56,16 +56,39 @@ function addRandomDestination() {
  */
 
 function setComments() {
-    fetch('/data').then((response) => response.json()).then((obj) => {
-        commentContainer = document.getElementById('comments-container');
+  num_comments = document.getElementById('num-comments').value;
+  order = document.getElementById('order').value;
+  fetch('/data' + '?num-comments=' + num_comments + '&order=' + order)
+    .then((response) => response.json()).then((obj) => {
+      console.log(obj);
+      commentContainer = document.getElementById('comments-container');
+      commentContainer.innerHTML = '';
+
+      if (num_comments >= 0 && num_comments <= 15) {
         for (let i = 0; i < Object.keys(obj).length; i++) {
-            commentContainer.appendChild(createListElem(obj[i]));
+          commentContainer.appendChild(createListComment(obj[i]));
         }
-    });
+      } else {
+        const liErrorMssg = document.createElement('p');
+        liErrorMssg.innerText = obj;
+        commentContainer.appendChild(liErrorMssg);
+      }
+      
+  });
 }
 
-function createListElem(text) {
-    const liElem = document.createElement('li');
-    liElem.innerText = text;
-    return liElem;
+function delComments() {
+  fetch('/delete-data', {method: 'POST'}).then(() => {
+    commentContainer = document.getElementById('comments-container');
+    commentContainer.innerHTML = '';
+  })
+}
+
+function createListComment(comment) {
+    const liElemName = document.createElement('li');
+    const liElemComment = document.createElement('li');
+    liElemName.innerText = comment.name + ':';
+    liElemComment.innerText = comment.text;
+    liElemName.appendChild(liElemComment);
+    return liElemName;
 }

@@ -1,82 +1,81 @@
-
 html, 
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .parallax {
-    background-image: url(https://cdn.pixabay.com/photo/2015/03/26/10/03/downtown-690826_960_720.jpg);
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    height:100%;
-    width: 100%;
+  background-image: url(https://cdn.pixabay.com/photo/2015/03/26/10/03/downtown-690826_960_720.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  height:100%;
+  width: 100%;
 }
 
 
 .dot {
-    background-color: black;
-    border-radius: 50%;
-    margin: auto;
-    height: 300px;
-    width: 300px;
-    position: relative;
-    top: -50%;
+  background-color: black;
+  border-radius: 50%;
+  margin: auto;
+  height: 300px;
+  width: 300px;
+  position: relative;
+  top: -50%;
 }
 
 
 
 .dot p {
-    color: white;
-    text-align: center;
-    vertical-align: center;
-    transform: scale(3)translate(0, 100%);
+  color: white;
+  text-align: center;
+  vertical-align: center;
+  transform: scale(3)translate(0, 100%);
 }
 
 .border {
-    border-style: solid;
-    border-color: white;
-    border-width: 5px;
-    margin: auto;
-    width: 90%;
-    height: 80%;
-    position: relative;
-    top: 10%;
+  border-style: solid;
+  border-color: white;
+  border-width: 5px;
+  margin: auto;
+  width: 90%;
+  height: 80%;
+  position: relative;
+  top: 10%;
 }
 
 
 .nav {
-    background-color: #e8e8e8;
-    width: 100%;
-    position: fixed;
-    top: 0;
+  background-color: #e8e8e8;
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 .nav a {
-    display: block;
-    float: left;
-    text-align: center;
-    padding: 10px;
+  display: block;
+  float: left;
+  text-align: center;
+  padding: 10px;
 }
 
 .nav a:hover {
-    background-color: #cbcac8
+  background-color: #cbcac8
 }
 
 .active {
-    background-color: #b9b8b7
+  background-color: #b9b8b7
 }
 
 #content {
-    margin: 60px 20px 20px;
+  margin: 60px 20px 20px;
 }
 
 #bio {
@@ -86,9 +85,9 @@ body {
 }
 
 .title {
-    margin-top: 30px;
-    background-color: #e8e8e8;
-    padding: 10px;
+  margin-top: 30px;
+  background-color: #e8e8e8;
+  padding: 10px;
 }
 
 
@@ -103,82 +102,97 @@ body {
 }
 
 #greeting-container {
-    margin-top: 10px;
-    margin-left: 20px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 #contact {
-    margin-top: 400px;
+  margin-top: 400px;
 }
 
 #proj {
-    margin: 60px 20px 20px;
+  margin: 60px 20px 20px;
 }
 
 #github {
-    padding: 10px;
+  padding: 10px;
 }
 
 #research, 
 #course {
-    margin: 10px;
+  margin: 10px;
 }
 
 .subheading {
-    background-color: #e8e8e8;
-    padding: 10px;
+  background-color: #e8e8e8;
+  padding: 10px;
 }
 
 #research p, 
 #course p {
-    margin: 10px;
+  margin: 10px;
 }
 
 
 .img_section {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .img_section::after {
-    content: "";
-    display: table;
-    clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .img_section img, 
 .img_section div {
-    padding-left: 10px
+  padding-left: 10px
 }
 
 .photo {
-    float: left;
-    max-height: 450px;
-    max-width: 450px;
+  float: left;
+  max-height: 450px;
+  max-width: 450px;
 }
 
 .photo .overlay-text {
-    background-color: black;
-    color: white;
-    opacity: 0;
-    position: relative;
-    top: -25px;
+  background-color: black;
+  color: white;
+  opacity: 0;
+  position: relative;
+  top: -25px;
 }
 
 .photo img:hover {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 
 .photo:hover .overlay-text {
-    opacity: 1;
+  opacity: 1;
 }
 
 #comments-container {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 #comments-container li {
-    margin: 20px;
-    padding: 10px;
-    border-style: solid;
+  margin: 20px;
+  padding: 10px;
+  overflow-wrap: break-word;
+}
+
+#comments-container li li {
+  border-radius: 15px;
+  border-style: solid;
+  border-width: 2px;
+}
+
+#comments-container p {
+  color: red;
+}
+
+textarea {
+  height: 150px;
+  width: 300px;
 }
