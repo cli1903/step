@@ -64,8 +64,8 @@ function setComments() {
     });
 }
 
-function createListElem(text) {
+function createListElem(comment) {
     const liElem = document.createElement('li');
-    liElem.innerText = text;
+    liElem.innerText = comment.name + ': ' + comment.text;
     return liElem;
 }
