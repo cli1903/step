@@ -26,23 +26,48 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private ArrayList<String> comments;
+  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-  public void init() {
-      comments = new ArrayList<>();
-  }
-
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = request.getParameter("comment");
-      comments.add(comment); 
+      String name = request.getParameter("name");
+      long timestamp = System.currentTimeMillis();
+
+      if (name.equals("")) {
+        name = "Anonymous";
+      }
+
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("comment-text", comment);
+      commentEntity.setProperty("username", name);
+      commentEntity.setProperty("time-posted", timestamp);
+
+      datastore.put(commentEntity);
+
       response.sendRedirect("/comments.html");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
+
+    Query commentQuery = new Query("Comment").addSort("time-posted", SortDirection.ASCENDING);
+    
+    PreparedQuery results = datastore.prepare(commentQuery);
+
+    List<Comment> comments = new ArrayList<>();
+    
+    for (Entity entity: results.asIterable()) {
+      String text = (String) entity.getProperty("comment-text");
+      String name = (String) entity.getProperty("username");
+      Comment comment = new Comment(text, name);
+      comments.add(comment);
+    }
+    
     String json = gson.toJson(comments);
     response.setContentType("appplication/json;");
     response.getWriter().println(json);
   }
+}
 }
