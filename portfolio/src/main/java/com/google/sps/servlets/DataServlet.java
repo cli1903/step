@@ -20,11 +20,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import com.google.sps.data.Comment;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
-import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,22 +37,22 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String comment = request.getParameter("comment");
-      String name = request.getParameter("name");
-      long timestamp = System.currentTimeMillis();
+    String comment = request.getParameter("comment");
+    String name = request.getParameter("name");
+    long timestamp = System.currentTimeMillis();
 
-      if (name.equals("")) {
-        name = "Anonymous";
-      }
+    if (name.equals("")) {
+      name = "Anonymous";
+    }
 
-      Entity commentEntity = new Entity("Comment");
-      commentEntity.setProperty("comment-text", comment);
-      commentEntity.setProperty("username", name);
-      commentEntity.setProperty("time-posted", timestamp);
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment-text", comment);
+    commentEntity.setProperty("username", name);
+    commentEntity.setProperty("time-posted", timestamp);
 
-      datastore.put(commentEntity);
+    datastore.put(commentEntity);
 
-      response.sendRedirect("/comments.html");
+    response.sendRedirect("/comments.html");
   }
 
   @Override
@@ -81,14 +81,16 @@ public class DataServlet extends HttpServlet {
     } else {
       commentQuery = new Query("Comment").addSort("time-posted", SortDirection.DESCENDING);
     }
-    
+
     PreparedQuery results = datastore.prepare(commentQuery);
 
     List<Comment> comments = new ArrayList<>();
 
     int counter = 0;
-    for (Entity entity: results.asIterable()) {
-      if (counter >= num_comments) { break; }
+    for (Entity entity : results.asIterable()) {
+      if (counter >= num_comments) {
+        break;
+      }
       String text = (String) entity.getProperty("comment-text");
       String name = (String) entity.getProperty("username");
 
@@ -96,7 +98,7 @@ public class DataServlet extends HttpServlet {
       comments.add(comment);
       counter++;
     }
-    
+
     String json = gson.toJson(comments);
     response.setContentType("appplication/json;");
     response.getWriter().println(json);
