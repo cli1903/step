@@ -59,8 +59,7 @@ function addRandomDestination() {
 function setGreetingsFromServer() {
   fetch('/data').then((response) => response.json()).then((obj) => {
     const greetingContainer = document.getElementById('greeting-container');
-
-    for (let i = 0; i < Object.keys(obj).length; i++) {
+    for (let i = 0; i < obj.length; i++) {
       greetingContainer.appendChild(createListElem('Hello ' + obj[i] + '!'));
     }
 
