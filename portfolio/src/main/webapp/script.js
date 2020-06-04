@@ -65,7 +65,7 @@ function setComments() {
       commentContainer.innerHTML = '';
 
       if (num_comments >= 0 && num_comments <= 15) {
-        for (let i = 0; i < Object.keys(obj).length; i++) {
+        for (let i = 0; i < obj.length; i++) {
           commentContainer.appendChild(createListComment(obj[i]));
         }
       } else {
