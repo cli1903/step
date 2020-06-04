@@ -14,10 +14,10 @@
 
 package com.google.sps.servlets;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,14 +30,14 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void init() {
-      comments = new ArrayList<>();
+    comments = new ArrayList<>();
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String comment = request.getParameter("comment");
-      comments.add(comment); 
-      response.sendRedirect("/comments.html");
+    String comment = request.getParameter("comment");
+    comments.add(comment);
+    response.sendRedirect("/comments.html");
   }
 
   @Override
