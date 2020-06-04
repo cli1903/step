@@ -28,10 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   private ArrayList<String> comments;
 
+  @Override
   public void init() {
       comments = new ArrayList<>();
   }
 
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = request.getParameter("comment");
       comments.add(comment); 
