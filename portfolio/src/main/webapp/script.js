@@ -58,7 +58,7 @@ function addRandomDestination() {
 function setComments() {
     fetch('/data').then((response) => response.json()).then((obj) => {
         commentContainer = document.getElementById('comments-container');
-        for (let i = 0; i < Object.keys(obj).length; i++) {
+        for (let i = 0; i < obj.length; i++) {
             commentContainer.appendChild(createListElem(obj[i]));
         }
     });
