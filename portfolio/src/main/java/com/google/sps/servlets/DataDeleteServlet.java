@@ -42,7 +42,12 @@ public class DataDeleteServlet extends HttpServlet {
 
     for (Entity entity : results.asIterable()) {
       Key key = entity.getKey();
-      datastore.delete(key);
+      try {
+        datastore.delete(key);
+      } catch (Exception e) {
+        response.setContentType("text/html");
+        response.getWriter().println("Error with deleting comment: " + e);
+      }
     }
 
     response.setContentType("text/html");
