@@ -55,7 +55,6 @@ function addRandomDestination() {
 /**
  * adds response from servlet
  */
-
 function setComments() {
   fetch('/data').then((response) => response.json()).then((obj) => {
     commentContainer = document.getElementById('comments-container');
