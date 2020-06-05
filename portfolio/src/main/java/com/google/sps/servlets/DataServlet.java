@@ -56,15 +56,6 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/comments.html");
   }
 
-  @Override
-  public void init() {
-    names = new ArrayList<>();
-    names.add("Cindy");
-    names.add("Anthony");
-    names.add("Charles");
-    names.add("Chris");
-    names.add("Ben");
-  }
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
