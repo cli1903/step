@@ -39,6 +39,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = request.getParameter("comment");
     String name = request.getParameter("name");
+
     long timestamp = System.currentTimeMillis();
 
     if (name.equals("")) {
