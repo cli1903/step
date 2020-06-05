@@ -55,7 +55,6 @@ function addRandomDestination() {
 /**
  * adds response from servlet
  */
-
 function setComments() {
   num_comments = document.getElementById('num-comments').value;
   order = document.getElementById('order').value;
