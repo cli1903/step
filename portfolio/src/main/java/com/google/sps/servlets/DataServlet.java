@@ -33,12 +33,19 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private static final String COMMENT_TEXT_PARAM = "comment";
+  private static final String COMMENT_NAME_PARAM = "name";
+  private static final String COMMENT_NUM_PARAM = "num-comments";
+  private static final String ENTITY_QUERY = "Comment";
+  private static final String ENTITY_TEXT_PARAM = "comment-text";
+  private static final String ENTITY_NAME_PARAM = "username";
+  private static final String ENTITY_TIME_PARAM = "time-posted";
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String comment = request.getParameter("comment");
-    String name = request.getParameter("name");
+    String comment = request.getParameter(COMMENT_TEXT_PARAM);
+    String name = request.getParameter(COMMENT_NAME_PARAM);
 
     long timestamp = System.currentTimeMillis();
 
@@ -46,10 +53,10 @@ public class DataServlet extends HttpServlet {
       name = "Anonymous";
     }
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("comment-text", comment);
-    commentEntity.setProperty("username", name);
-    commentEntity.setProperty("time-posted", timestamp);
+    Entity commentEntity = new Entity(ENTITY_QUERY);
+    commentEntity.setProperty(ENTITY_TEXT_PARAM, comment);
+    commentEntity.setProperty(ENTITY_NAME_PARAM, name);
+    commentEntity.setProperty(ENTITY_TIME_PARAM, timestamp);
 
     datastore.put(commentEntity);
 
@@ -61,7 +68,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
     int num_comments;
-    String user_num = request.getParameter("num-comments");
+    String user_num = request.getParameter(COMMENT_NUM_PARAM);
 
     try {
       num_comments = Integer.parseInt(user_num);
@@ -79,9 +86,9 @@ public class DataServlet extends HttpServlet {
 
     Query commentQuery;
     if (request.getParameter("order").equals("asc")) {
-      commentQuery = new Query("Comment").addSort("time-posted", SortDirection.ASCENDING);
+      commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.ASCENDING);
     } else {
-      commentQuery = new Query("Comment").addSort("time-posted", SortDirection.DESCENDING);
+      commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.DESCENDING);
     }
 
     PreparedQuery results = datastore.prepare(commentQuery);
@@ -93,8 +100,8 @@ public class DataServlet extends HttpServlet {
       if (counter >= num_comments) {
         break;
       }
-      String text = (String) entity.getProperty("comment-text");
-      String name = (String) entity.getProperty("username");
+      String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
+      String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
 
       Comment comment = new Comment(text, name);
       comments.add(comment);
