@@ -78,10 +78,9 @@ public class DataServlet extends HttpServlet {
     }
 
     if (num_comments < 0 || num_comments > 15) {
-      String json = gson.toJson({"type": "VALIDATION", "message": "Please enter an integer between 0 and 15."});
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       response.setContentType("application/json");
-      response.getWriter().println(json);
+      response.getWriter().println("{\"type\": \"VALIDATION\", \"message\": \"Please enter an integer between 0 and 15.\"}");
       return;
     }
 

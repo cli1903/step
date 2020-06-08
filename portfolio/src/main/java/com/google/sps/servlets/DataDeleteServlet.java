@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/delete-data")
 public class DataDeleteServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  Gson gson = new Gson();
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query commentQuery = new Query("Comment");
@@ -45,12 +46,12 @@ public class DataDeleteServlet extends HttpServlet {
       try {
         datastore.delete(key);
       } catch (Exception e) {
-        Gson gson = new Gson();
-        String error_json = gson.to_Json({"type": "SERVER", "message": "error deleting comment(s)"});
-        response.setStatus(HttpServletResponse.SC.INTERNAL_SERVER_ERROR);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json");
-        response.getWriter().println(error_json);
+        response.getWriter().println("{\"type\": \"SERVER\", \"message\": \"error deleting comment(s)\"}");
       }
-    }
+    }   
+    response.setContentType("text/html");
+    response.getWriter().println("");
   }
 }

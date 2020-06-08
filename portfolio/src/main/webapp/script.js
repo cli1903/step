@@ -61,9 +61,8 @@ function setComments() {
   fetch(
       '/data' +
       '?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => response.json())
+      .then((response) => {console.log(response); return response.json()})
       .then((obj) => {
-        console.log(obj);
         commentContainer = document.getElementById('comments-container');
         commentContainer.innerHTML = '';
 
@@ -72,19 +71,23 @@ function setComments() {
             commentContainer.appendChild(createListComment(obj[i]));
           }
         } else {
-          const liErrorMssg = document.createElement('p');
-          liErrorMssg.innerText = obj;
-          commentContainer.appendChild(liErrorMssg);
+          const errorMssg = createErrorMssg(obj);
+          commentContainer.appendChild(errorMssg);
         }
       });
 }
 
 function delComments() {
-  fetch('/delete-data', {method: 'POST'}).then((response) => response.json()).then((obj) => {
-    commentContainer = document.getElementById('comments-container');
-    error_mess = document.createElemen('p');
-    error_mess.innerText = obj.type + ': ' + obj.message;
-    commentContainer.innerHTML = error_mess;
+  fetch('/delete-data', {method: 'POST'}).then((response) => {
+    contentType = response.headers.get('content-type');
+    const commentContainer = document.getElementById('comments-container');
+    if (contentType == 'text/html') {
+      commentContainer.innerHTML = '';
+    } else {
+      const errorJson = response.json();
+      const errorMssg = createErrorMssg(errorJson);
+      commentContainer.appendChild(errorMssg);
+    }
   })
 }
 
@@ -95,4 +98,10 @@ function createListComment(comment) {
   liElemComment.innerText = comment.text;
   liElemName.appendChild(liElemComment);
   return liElemName;
+}
+
+function createErrorMssg(errorJson) {
+  errMssg = document.createElement('p');
+  errMssg.innerText = errorJson.type + ' ERROR: ' + errorJson.message;
+  return errMssg;
 }
