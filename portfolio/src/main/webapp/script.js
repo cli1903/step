@@ -61,7 +61,7 @@ function setComments() {
   fetch(
       '/data' +
       '?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => {console.log(response); return response.json()})
+      .then((response) => response.json())
       .then((obj) => {
         commentContainer = document.getElementById('comments-container');
         commentContainer.innerHTML = '';
