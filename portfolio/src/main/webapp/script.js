@@ -80,9 +80,11 @@ function setComments() {
 }
 
 function delComments() {
-  fetch('/delete-data', {method: 'POST'}).then(() => {
+  fetch('/delete-data', {method: 'POST'}).then((response) => response.json()).then((obj) => {
     commentContainer = document.getElementById('comments-container');
-    commentContainer.innerHTML = '';
+    error_mess = document.createElemen('p');
+    error_mess.innerText = obj.type + ': ' + obj.message;
+    commentContainer.innerHTML = error_mess;
   })
 }
 
