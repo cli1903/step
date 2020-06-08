@@ -66,7 +66,7 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    private final Gson gson = new Gson();
+    Gson gson = new Gson();
     int num_comments;
     String user_num = request.getParameter(COMMENT_NUM_PARAM);
 
