@@ -58,9 +58,7 @@ function addRandomDestination() {
 function setComments() {
   num_comments = document.getElementById('num-comments').value;
   order = document.getElementById('order').value;
-  fetch(
-      '/data' +
-      '?num-comments=' + num_comments + '&order=' + order)
+  fetch('/data?num-comments=' + num_comments + '&order=' + order)
       .then((response) => response.json())
       .then((obj) => {
         commentContainer = document.getElementById('comments-container');
@@ -102,6 +100,6 @@ function createListComment(comment) {
 
 function createErrorMssg(errorJson) {
   errMssg = document.createElement('p');
-  errMssg.innerText = errorJson.type + ' ERROR: ' + errorJson.message;
+  errMssg.innerText = errorJson;
   return errMssg;
 }
