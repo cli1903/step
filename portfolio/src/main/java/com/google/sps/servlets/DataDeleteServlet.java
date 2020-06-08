@@ -45,12 +45,12 @@ public class DataDeleteServlet extends HttpServlet {
       try {
         datastore.delete(key);
       } catch (Exception e) {
-        response.setContentType("text/html");
-        response.getWriter().println("Error with deleting comment: " + e);
+        Gson gson = new Gson();
+        String error_json = gson.to_Json({"type": "SERVER", "message": "error deleting comment(s)"});
+        response.setStatus(HttpServletResponse.SC.INTERNAL_SERVER_ERROR);
+        response.setContentType("application/json");
+        response.getWriter().println(error_json);
       }
     }
-
-    response.setContentType("text/html");
-    response.getWriter().println("");
   }
 }
