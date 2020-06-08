@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -41,6 +43,7 @@ public class DataServlet extends HttpServlet {
   private static final String ENTITY_NAME_PARAM = "username";
   private static final String ENTITY_TIME_PARAM = "time-posted";
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -67,49 +70,68 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
-    int num_comments;
-    String user_num = request.getParameter(COMMENT_NUM_PARAM);
+    
+    if (userService.isUserLoggedIn()) {
+      int num_comments;
+      String user_num = request.getParameter(COMMENT_NUM_PARAM);
 
-    try {
+      try {
       num_comments = Integer.parseInt(user_num);
-    } catch (NumberFormatException e) {
-      System.err.println("Could not convert to int: " + user_num);
-      num_comments = -1;
-    }
-
-    if (num_comments < 0 || num_comments > 15) {
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      response.setContentType("application/json");
-      response.getWriter().println("{\"type\": \"VALIDATION\", \"message\": \"Please enter an integer between 0 and 15.\"}");
-      return;
-    }
-
-    Query commentQuery;
-    if (request.getParameter("order").equals("asc")) {
-      commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.ASCENDING);
-    } else {
-      commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.DESCENDING);
-    }
-
-    PreparedQuery results = datastore.prepare(commentQuery);
-
-    List<Comment> comments = new ArrayList<>();
-
-    int counter = 0;
-    for (Entity entity : results.asIterable()) {
-      if (counter >= num_comments) {
-        break;
+      } catch (NumberFormatException e) {
+        System.err.println("Could not convert to int: " + user_num);
+        num_comments = -1;
       }
-      String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
-      String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
 
-      Comment comment = new Comment(text, name);
-      comments.add(comment);
-      counter++;
+      if (num_comments < 0 || num_comments > 15) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setContentType("application/json");
+        response.getWriter().println("{\"type\": \"VALIDATION\", \"message\": \"Please enter an integer between 0 and 15.\"}");
+        return;
+      }
+
+      Query commentQuery;
+      if (request.getParameter("order").equals("asc")) {
+        commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.ASCENDING);
+      } else {
+        commentQuery = new Query("Comment").addSort(ENTITY_TIME_PARAM, SortDirection.DESCENDING);
+      }
+
+      PreparedQuery results = datastore.prepare(commentQuery);
+
+      String comments = "";
+
+      int counter = 0;
+      for (Entity entity : results.asIterable()) {
+        if (counter >= num_comments) {
+          break;
+        }
+        String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
+        String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
+
+        String commentHtml = commentParamsToHtml(name, text);
+        comments += commentHtml;
+        counter++;
+      }
+
+      response.setContentType("text/html");
+      response.getWriter().println(comments + "<br>");
+
+      String urlToRedirectToAfterUserLogsOut = "/comments.html";
+      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+
+      response.setContentType("text/html");
+      response.getWriter().println("<a href=" + logoutUrl + "> <button> Log Out </button> </a>");
+
+    } else {
+      String urlToRedirectToAfterUserLogsIn = "/comments.html";
+      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      response.setContentType("text/html");
+      response.getWriter().println("<p> Please log in to see comments </p>");
+      response.getWriter().println("<a href=" + loginUrl + "> <button> Log In </button> </a>");
     }
+  }
 
-    String json = gson.toJson(comments);
-    response.setContentType("appplication/json;");
-    response.getWriter().println(json);
+  public String commentParamsToHtml(String name, String text) {
+    return "<div class=\"comment\"> " + name + ": <li> " + text + " </li> </div> "; 
   }
 }

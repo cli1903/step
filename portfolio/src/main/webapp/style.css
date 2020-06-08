@@ -176,13 +176,14 @@ body {
   list-style-type: none;
 }
 
-#comments-container li {
-  margin: 20px;
+.comment {
+  margin: 10px;
   padding: 10px;
   overflow-wrap: break-word;
 }
 
-#comments-container li li {
+.comment li {
+  padding: 10px;
   border-radius: 15px;
   border-style: solid;
   border-width: 2px;

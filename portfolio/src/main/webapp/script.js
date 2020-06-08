@@ -55,26 +55,25 @@ function addRandomDestination() {
 /**
  * adds response from servlet
  */
+
 function setComments() {
+  commentContainer = document.getElementById('comments-container');
   num_comments = document.getElementById('num-comments').value;
   order = document.getElementById('order').value;
-  fetch(
-      '/data' +
-      '?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => {console.log(response); return response.json()})
-      .then((obj) => {
-        commentContainer = document.getElementById('comments-container');
+  fetch('/data' + '?num-comments=' + num_comments + '&order=' + order)
+    .then((response) => {
+      if (response.ok) {
         commentContainer.innerHTML = '';
-
-        if (num_comments >= 0 && num_comments <= 15) {
-          for (let i = 0; i < obj.length; i++) {
-            commentContainer.appendChild(createListComment(obj[i]));
-          }
-        } else {
-          const errorMssg = createErrorMssg(obj);
-          commentContainer.appendChild(errorMssg);
-        }
-      });
+        response.text().then((comment) => {
+          console.log(comment);
+          commentContainer.innerHTML = comment;
+        })
+      } else {
+        response.json().then((errorJson) => {
+          commentContainer.appendChild(createErrorMssg(errorJson));
+        });
+      }
+    })
 }
 
 function delComments() {
