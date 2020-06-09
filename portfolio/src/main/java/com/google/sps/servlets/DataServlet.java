@@ -113,7 +113,7 @@ public class DataServlet extends HttpServlet {
       }
 
       String json = gson.toJson(comments);
-      response.setContentType("appplication/json");
+      response.setContentType("application/json");
       response.getWriter().println(json);
     
     } else {

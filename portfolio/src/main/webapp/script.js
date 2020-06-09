@@ -57,17 +57,30 @@ function addRandomDestination() {
  */
 
 function setComments() {
-  commentContainer = document.getElementById('comments-container');
-  num_comments = document.getElementById('num-comments').value;
-  order = document.getElementById('order').value;
+  const commentContainer = document.getElementById('comments-container');
+  const num_comments = document.getElementById('num-comments').value;
+  const order = document.getElementById('order').value;
   fetch('/data' + '?num-comments=' + num_comments + '&order=' + order)
     .then((response) => {
       if (response.ok) {
         commentContainer.innerHTML = '';
-        response.text().then((comment) => {
-          console.log(comment);
-          commentContainer.innerHTML = comment;
-        })
+        const contentType = response.headers.get('content-type');
+        if (contentType == 'application/json') {       
+          response.json().then((commentsList) => {
+            for (let i = 0; i < commentsList.length; i++) {
+              commentContainer.appendChild(createListComment(commentsList[i]));
+            }
+          });
+          getLoginLogout(true, commentContainer);
+          
+        } else {
+          response.text().then((text) => {
+            const mssg = document.createElement('p');
+            mssg.innerText = text;
+            commentContainer.appendChild(mssg);
+            getLoginLogout(false, commentContainer);
+          });
+        }
       } else {
         response.json().then((errorJson) => {
           commentContainer.appendChild(createErrorMssg(errorJson));
@@ -100,7 +113,32 @@ function createListComment(comment) {
 }
 
 function createErrorMssg(errorJson) {
-  errMssg = document.createElement('p');
+  const errMssg = document.createElement('p');
   errMssg.innerText = errorJson.type + ' ERROR: ' + errorJson.message;
   return errMssg;
+}
+
+function createLoginButton(loginUrl, alreadyLoggedIn) {
+  const link = document.createElement('a');
+  link.href = loginUrl;
+  const button = document.createElement('button');
+  if (alreadyLoggedIn) {
+    button.innerText = 'Log Out';
+  } else {
+    button.innerText = 'Log In';
+  }
+  link.appendChild(button);
+  return link;
+}
+
+function getLoginLogout(alreadyLoggedIn, container) {
+  fetch('/login', {method: 'POST'}).then((response) => {
+    if (response.ok) {
+      response.json().then((loginUrl) => createLoginButton(loginUrl, 
+        alreadyLoggedIn)).then((button) => container.appendChild(button));
+    } else {
+      response.json()
+        .then((errJson) => container.appendChild(createErrorMssg(errJson)));
+    }
+  })
 }

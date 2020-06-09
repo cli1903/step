@@ -16,18 +16,28 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
   UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
+    Gson gson = new Gson();
+    response.setContentType("text/html");
+    String urlToRedirectTo = "/comments.html";
+    if (userService.isUserLoggedIn()) {
+      String logoutUrl = userService.createLogoutURL(urlToRedirectTo);
+      response.getWriter().println(gson.toJson(logoutUrl));
+    } else {
+      String loginUrl = userService.createLoginURL(urlToRedirectTo);
+      response.getWriter().println(gson.toJson(loginUrl));
+    }
   }
 }
