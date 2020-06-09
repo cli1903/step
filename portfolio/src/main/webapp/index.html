@@ -7,52 +7,136 @@
     <script src="script.js"></script>
   </head>
   <body>
-
-    <div class="parallax" id="home">
-        <div class="border"> </div>
-        <div class="dot">
-          <p> <b> Cindy Li's <br> Portfolio </b> </p>
-        </div>
+    <div class="sidebar" id="nav">
+      <ul>
+        <li id="profile"> </li>
+        <li> <a href="/#home"> HOME </a> </li>
+        <li> <a href="/#bio"> ABOUT ME </a> </li>
+        <li> <a href="/#education"> EDUCATION </a> </li>
+        <li> <a href="/#projects"> EXPERIENCE </a> </li>
+        <li> <a href="/#comments"> COMMENTS </a> </li>
+        <li> <a href="/images.html"> GALLERY </a> </li>
+      </ul>
     </div>
 
-    <div class="nav">
-        <a href="index.html#home" class="active"> Home </a>
-        <a href="index.html#content"> About Me </a>
-        <a href="projects.html"> My Projects </a>
-        <a href="images.html"> My Gallery </a>
-        <a href="comments.html"> Comments </a>
-    </div>
-
-    <div id="content">
-      <br>
-      <h1 class="title"> About Me </h1>
-      <div id="bio">
-        <p> I am a rising junior at Brown University, studying Applied Math - Computer Science. My academic interests lie primarily in machine learning and data science.
-          <br> In my free time, I enjoy reading, listening to music, and hanging out with my dog. I adore giant pandas and hope to one day visit the panda sanctuary in Sichuan, China (along with a million other places).
-        </p>
-        <img src="/images/surprise-panda.jpg" alt="image of baby panda roaring" width=500px height=500px>
+    <div id="home" class="section">
+      <div class="content">
+        <h1> CINDY LI </h1>
+        <p class="subtitle"> cindy_li@brown.edu </p>
       </div>
     </div>
-
-    <div id="side-bar">
-        <div id="button-stuff">
-          <p> Click here to get a random place I want to travel to: </p>
-          <button onclick="addRandomDestination()"> Wanderlust </button>
-          <br> <br>
-          <img id="visit-pic" src="https://upload.wikimedia.org/wikipedia/commons/c/cf/A_large_blank_world_map_with_oceans_marked_in_blue.PNG" alt="world map" width=350px height=250px>
-          <br>
-          <div id="travel-container"></div>
-        </div>
-
-        <footer id="contact">
-            <hr>
-            <h3> Contact Info </h3>
-            <p>
-              <b> Email: </b> cindy_li@brown.edu <br>
-              <b> Cell: </b> 1-123-456-7890 <br>
-              <b> LinkedIn: </b> <a href="https://www.linkedin.com/in/cindy-li-2022/"> https://www.linkedin.com/in/cindy-li-2022/ </a>
+    <hr>
+    <div id="bio" class="section">
+      <div class="content">
+        <h1> ABOUT ME </h1>
+        <p> I am a rising junior at Brown University studying Applied Math - CS. 
+          I am primarily interested in data science and machine learning.
+        </p>
+      </div>
+    </div> 
+    <hr>
+    <div id="education" class="section">
+      <div class="content">
+        <h1> EDUCATION </h1>
+        <p> <h3> BROWN UNIVERSITY </h3> <span class="right"> 2018 - 2022 </span> </p>
+        <p> ScB Candidate in Applied Mathematics - Computer Science </p>
+        <br>
+        <p> <b> COURSEWORK </b> </p>
+        <ul>
+          <li> CS: An Integrated Introduction <span class="right"> CSCI 0170 </span> </li>
+          <li> Introduction to Computer Systems <span class="right"> CSCI 0330 </span> </li>
+          <li> Machine Learning <span class="right"> CSCI 1420 </span> </li>
+          <li> Deep Learning <span class="right"> CSCI 1470 </span> </li>
+          <li> Data Science <span class="right"> CSCI 1951 </span> </li>
+          <li> Statistical Inference I <span class="right"> APMA 1655 </span> </li>
+          <li> Linear Algebra <span class="right"> MATH 0520 </span> </li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div id="projects" class="section">
+      <div class="content">
+        <h1> WORK EXPERIENCE & PROJECTS </h1>
+        <h3> WORK EXPERIENCE </h3>
+        <ul>
+          <li> 
+            <p> 
+              <span class="company"> Google </span> STEP Intern <span class="right"> May 2020 - Aug 2020 </span> 
             </p>
-        </footer>
+            <p>
+              <div class="description">
+                <i> Webapp Development. </i>
+              </div>
+            </p> 
+          </li>
+          <li> 
+            <p>
+              <span class="company"> Mathnasium </span> Instructor <span class="right"> Oct 2016 - Apr 2018 </span>
+              <div class="description">
+                <i> Instructed students of all ages in math and science. Led review sessions in prepartions of final and state exams. Helped students prepare for SAT and ACT exams. </i>
+              </div>
+            </p>
+          </li>
+        </ul>
+
+        <h3> RESEARCH </h3>
+        <ul>
+          <li> 
+            <p> 
+              <span class="company"> Brown AI Lab </span> Student Researcher <span class="right"> Feb 2019 - Present </span> 
+              <br>
+              <div class="description">
+                <i> Mining misdiagnosis patterns from biomedical literature </i>
+                <ul>
+                  <li> parsed PubMed article database, extracting articles relating to the misdiagnosis of one disease as another </li>
+                  <li> extracted disease name matched using QuickUMLS and calculate misdiagnosis frequencies for potential use in diagnostic decision support systems </li>
+                </ul>
+              </div>
+            </p> 
+          </li>
+          <li> 
+            <p>
+              <span class="company"> Stony Brook University </span> Student Researcher <span class="right"> Jun 2016 - Jan 2018 </span> 
+              <br>
+              <div class="description">
+                <i> <a href="https://mbio.asm.org/content/9/4/e00782-18"> Phagocytes from Mice Lacking the Sts Phosphatases Have an Enhanced Antifungal Response to Candida albicans. </a> </i>
+                <ul>
+                  <li> researched effects of suppressing two immuno-regulatory proteins in mice's immune response to Candida fungi </li>
+                  <li> used mouse dendritic cells, with and without the proteins, and stimulated immune response to look at difference in ROS immune response </li>
+                </ul>
+              </div>
+            </p>
+          </li>
+        </ul>
+
+        <h3> COURSEWORK </h3>
+        <ul>
+          <li> 
+            <p> 
+              CSCI 1951: <span class="company"> Data Science </span> <span class="right"> Spring 2020 </span> 
+              <div class="description">
+                <i> Predicting NFL game wins </i>
+                <ul>
+                  <li> gathered data using SportRadar API </li>
+                  <li> trained machine learning models on team stats for each game </li>
+                  <li> predicted whether home team would win based on average of each team's past five games </li>
+                </ul>
+              </div>
+            </p> 
+          </li>
+          <li> 
+            <p>
+              CSCI 1470: <span class="company"> Deep Learning </span>  <span class="right"> Fall 2019 </span> 
+              <div class="description">
+                <i> <a href="https://github.com/cli1903/monkey-business"> Predicting primate upper limb movements via neuron firing rates is no monkey business </a> </i>
+                <ul>
+                  <li> used data gathered by lab to train recurrent neural networks to predict limb position based on neuron firing rates </li>
+                </ul>
+              </div>
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>
