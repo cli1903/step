@@ -64,6 +64,11 @@ function setComments() {
     .then((response) => {
       if (response.ok) {
         commentContainer.innerHTML = '';
+        loginContainer = document.getElementById('login');
+        loginContainer.innerHTML = '';
+        formContainer = document.getElementById('form');
+        formContainer.innerHTML = '';
+
         const contentType = response.headers.get('content-type');
         if (contentType == 'application/json') {       
           response.json().then((commentsList) => {
@@ -71,7 +76,8 @@ function setComments() {
               commentContainer.appendChild(createListComment(commentsList[i]));
             }
           });
-          getLoginLogout(true, commentContainer);
+          getLoginLogout(true, loginContainer);
+          makeForm();
           
         } else {
           response.text().then((text) => {
@@ -141,4 +147,15 @@ function getLoginLogout(alreadyLoggedIn, container) {
         .then((errJson) => container.appendChild(createErrorMssg(errJson)));
     }
   })
+}
+
+function makeForm() {
+  
+  const formHtml = '<button onclick="delComments()"> Delete All Comments' +
+      '</button> <br><br>'+
+      '<form action="/data" method="POST"> <p> Leave a comment!' +
+      '</p> <label for="name"> name/username </label>' +
+      '<input type="text" id="name" name="name"></input> <br><br>' +
+      '<textarea name="comment"></textarea> <br> <input type="submit"> </form>';
+  formContainer.innerHTML = formHtml;
 }
