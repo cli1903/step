@@ -60,41 +60,39 @@ function setComments() {
   const commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
   const loginContainer = document.getElementById('login');
-  loginContainer.innerHTML = '';
   const formContainer = document.getElementById('form');
   formContainer.innerHTML = '';
   const num_comments = document.getElementById('num-comments').value;
   const order = document.getElementById('order').value;
-  fetch(
-      '/data' +
-      '?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => {
-        if (response.ok) {
-          const contentType = response.headers.get('content-type');
-          if (contentType == 'application/json') {
-            response.json().then((commentsList) => {
-              for (let i = 0; i < commentsList.length; i++) {
-                commentContainer.appendChild(
-                    createListComment(commentsList[i]));
-              }
-            });
-            getLoginLogout(true, loginContainer);
-            makeForm(formContainer);
 
-          } else {
-            response.text().then((text) => {
-              const mssg = document.createElement('p');
-              mssg.innerText = text;
-              commentContainer.appendChild(mssg);
-              getLoginLogout(false, commentContainer);
-            });
-          }
+  fetch('/data?num-comments=' + num_comments + '&order=' + order)
+    .then((response) => {
+      if (response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType == 'application/json') {
+          response.json().then((commentsList) => {
+            for (let i = 0; i < commentsList.length; i++) {
+              commentContainer.appendChild(
+                  createListComment(commentsList[i]));
+            }
+          })
+          makeForm(formContainer);
+
         } else {
-          response.json().then((errorJson) => {
-            commentContainer.appendChild(createErrorMssg(errorJson));
+          response.text().then((text) => {
+            const mssg = document.createElement('p');
+            mssg.innerText = text;
+            commentContainer.appendChild(mssg);
           });
         }
-      })
+        getLoginLogout(loginContainer);
+      } else {
+        response.json().then((errorJson) => {
+          commentContainer.appendChild(createErrorMssg(errorJson));
+        });
+      }
+      
+    })
 }
 
 function delComments() {
@@ -126,25 +124,23 @@ function createErrorMssg(errorJson) {
   return errMssg;
 }
 
-function createLoginButton(loginUrl, alreadyLoggedIn) {
-  const link = document.createElement('a');
-  link.href = loginUrl;
-  const button = document.createElement('button');
-  if (alreadyLoggedIn) {
+function editLoginButton(loginUrl, alreadyLoggedIn, loginAnchor) {
+  loginAnchor.href = loginUrl;
+  const button = loginAnchor.firstElementChild;
+  if (alreadyLoggedIn == "true") {
     button.innerText = 'Log Out';
   } else {
     button.innerText = 'Log In';
   }
-  link.appendChild(button);
-  return link;
+  //return loginAnchor;
 }
 
-function getLoginLogout(alreadyLoggedIn, container) {
+function getLoginLogout(container) {
   fetch('/login', {method: 'POST'}).then((response) => {
     if (response.ok) {
       response.json()
-          .then((loginUrl) => createLoginButton(loginUrl, alreadyLoggedIn))
-          .then((button) => container.appendChild(button));
+        .then((login) => editLoginButton(login.url, login.loggedIn, container));
+        //.then((button) => container.appendChild(button));
     } else {
       response.json().then(
           (errJson) => container.appendChild(createErrorMssg(errJson)));
@@ -152,12 +148,12 @@ function getLoginLogout(alreadyLoggedIn, container) {
   })
 }
 
-function makeForm(formContainer) {
+function makeForm(container) {
   const formHtml = '<button onclick="delComments()"> Delete All Comments' +
       '</button> <br><br>' +
       '<form action="/data" method="POST"> <p> Leave a comment!' +
       '</p> <label for="name"> name/username </label>' +
       '<input type="text" id="name" name="name"></input> <br><br>' +
       '<textarea name="comment"></textarea> <br> <input type="submit"> </form>';
-  formContainer.innerHTML = formHtml;
+  container.innerHTML = formHtml;
 }

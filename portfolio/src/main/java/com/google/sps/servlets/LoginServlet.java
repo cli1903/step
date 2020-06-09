@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -29,15 +30,20 @@ public class LoginServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    HashMap<String, String> responseMap = new HashMap<>();
     Gson gson = new Gson();
-    response.setContentType("text/html");
     String urlToRedirectTo = "/comments.html";
     if (userService.isUserLoggedIn()) {
       String logoutUrl = userService.createLogoutURL(urlToRedirectTo);
-      response.getWriter().println(gson.toJson(logoutUrl));
+      responseMap.put("url", logoutUrl);
+      responseMap.put("loggedIn", "true");
+      
     } else {
       String loginUrl = userService.createLoginURL(urlToRedirectTo);
-      response.getWriter().println(gson.toJson(loginUrl));
+      responseMap.put("url", loginUrl);
+      responseMap.put("loggedIn", "false");
     }
+    response.setContentType("application/json");
+    response.getWriter().println(gson.toJson(responseMap));
   }
 }

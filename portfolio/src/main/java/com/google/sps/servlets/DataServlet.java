@@ -27,6 +27,7 @@ import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,7 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     int num_comments;
     String user_num = request.getParameter(COMMENT_NUM_PARAM);
+    HashMap<String, String> errorMap = new HashMap<>();
 
     if (userService.isUserLoggedIn()) {
       try {
@@ -83,7 +85,9 @@ public class DataServlet extends HttpServlet {
       if (num_comments < 0 || num_comments > 15) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setContentType("application/json");
-        response.getWriter().println(gson.toJson("Please enter an integer between 0 and 15."));
+        errorMap.put("type", "VALIDATION");
+        errorMap.put("message", "Please enter an integer between 0 and 15.");
+        response.getWriter().println(gson.toJson(errorMap));
         return;
       }
 

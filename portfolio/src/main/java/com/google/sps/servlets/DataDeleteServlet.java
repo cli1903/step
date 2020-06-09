@@ -27,6 +27,7 @@ import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ public class DataDeleteServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query commentQuery = new Query("Comment");
     PreparedQuery results = datastore.prepare(commentQuery);
+    HashMap<String, String> errorMap = new HashMap<>();
 
     for (Entity entity : results.asIterable()) {
       Key key = entity.getKey();
@@ -48,8 +50,9 @@ public class DataDeleteServlet extends HttpServlet {
       } catch (Exception e) {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json");
-        response.getWriter().println(
-            "{\"type\": \"SERVER\", \"message\": \"error deleting comment(s)\"}");
+        errorMap.put("type", "VALIDATION");
+        errorMap.put("message", "Error deleting comment.");
+        response.getWriter().println(gson.toJson(errorMap));
       }
     }
     response.setContentType("text/html");
