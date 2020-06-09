@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/delete-data")
 public class DataDeleteServlet extends HttpServlet {
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  Gson gson = new Gson();
+  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private final Gson gson = new Gson();
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query commentQuery = new Query("Comment");
