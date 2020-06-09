@@ -14,14 +14,14 @@
 
 package com.google.sps.servlets;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -66,7 +66,6 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/comments.html");
   }
 
-  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -75,7 +74,7 @@ public class DataServlet extends HttpServlet {
 
     if (userService.isUserLoggedIn()) {
       try {
-      num_comments = Integer.parseInt(user_num);
+        num_comments = Integer.parseInt(user_num);
       } catch (NumberFormatException e) {
         System.err.println("Could not convert to int: " + user_num);
         num_comments = -1;
@@ -115,11 +114,10 @@ public class DataServlet extends HttpServlet {
       String json = gson.toJson(comments);
       response.setContentType("application/json");
       response.getWriter().println(json);
-    
+
     } else {
       response.setContentType("text/html");
       response.getWriter().println("Please log in to see / post comments.");
     }
-    
   }
 }

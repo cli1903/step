@@ -58,41 +58,43 @@ function addRandomDestination() {
 
 function setComments() {
   const commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
+  const loginContainer = document.getElementById('login');
+  loginContainer.innerHTML = '';
+  const formContainer = document.getElementById('form');
+  formContainer.innerHTML = '';
   const num_comments = document.getElementById('num-comments').value;
   const order = document.getElementById('order').value;
-  fetch('/data' + '?num-comments=' + num_comments + '&order=' + order)
-    .then((response) => {
-      if (response.ok) {
-        commentContainer.innerHTML = '';
-        loginContainer = document.getElementById('login');
-        loginContainer.innerHTML = '';
-        formContainer = document.getElementById('form');
-        formContainer.innerHTML = '';
+  fetch(
+      '/data' +
+      '?num-comments=' + num_comments + '&order=' + order)
+      .then((response) => {
+        if (response.ok) {
+          const contentType = response.headers.get('content-type');
+          if (contentType == 'application/json') {
+            response.json().then((commentsList) => {
+              for (let i = 0; i < commentsList.length; i++) {
+                commentContainer.appendChild(
+                    createListComment(commentsList[i]));
+              }
+            });
+            getLoginLogout(true, loginContainer);
+            makeForm(formContainer);
 
-        const contentType = response.headers.get('content-type');
-        if (contentType == 'application/json') {       
-          response.json().then((commentsList) => {
-            for (let i = 0; i < commentsList.length; i++) {
-              commentContainer.appendChild(createListComment(commentsList[i]));
-            }
-          });
-          getLoginLogout(true, loginContainer);
-          makeForm();
-          
+          } else {
+            response.text().then((text) => {
+              const mssg = document.createElement('p');
+              mssg.innerText = text;
+              commentContainer.appendChild(mssg);
+              getLoginLogout(false, commentContainer);
+            });
+          }
         } else {
-          response.text().then((text) => {
-            const mssg = document.createElement('p');
-            mssg.innerText = text;
-            commentContainer.appendChild(mssg);
-            getLoginLogout(false, commentContainer);
+          response.json().then((errorJson) => {
+            commentContainer.appendChild(createErrorMssg(errorJson));
           });
         }
-      } else {
-        response.json().then((errorJson) => {
-          commentContainer.appendChild(createErrorMssg(errorJson));
-        });
-      }
-    })
+      })
 }
 
 function delComments() {
@@ -140,19 +142,19 @@ function createLoginButton(loginUrl, alreadyLoggedIn) {
 function getLoginLogout(alreadyLoggedIn, container) {
   fetch('/login', {method: 'POST'}).then((response) => {
     if (response.ok) {
-      response.json().then((loginUrl) => createLoginButton(loginUrl, 
-        alreadyLoggedIn)).then((button) => container.appendChild(button));
-    } else {
       response.json()
-        .then((errJson) => container.appendChild(createErrorMssg(errJson)));
+          .then((loginUrl) => createLoginButton(loginUrl, alreadyLoggedIn))
+          .then((button) => container.appendChild(button));
+    } else {
+      response.json().then(
+          (errJson) => container.appendChild(createErrorMssg(errJson)));
     }
   })
 }
 
-function makeForm() {
-  
+function makeForm(formContainer) {
   const formHtml = '<button onclick="delComments()"> Delete All Comments' +
-      '</button> <br><br>'+
+      '</button> <br><br>' +
       '<form action="/data" method="POST"> <p> Leave a comment!' +
       '</p> <label for="name"> name/username </label>' +
       '<input type="text" id="name" name="name"></input> <br><br>' +

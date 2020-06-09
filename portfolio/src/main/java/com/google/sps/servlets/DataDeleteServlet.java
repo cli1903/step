@@ -48,9 +48,10 @@ public class DataDeleteServlet extends HttpServlet {
       } catch (Exception e) {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json");
-        response.getWriter().println("{\"type\": \"SERVER\", \"message\": \"error deleting comment(s)\"}");
+        response.getWriter().println(
+            "{\"type\": \"SERVER\", \"message\": \"error deleting comment(s)\"}");
       }
-    }   
+    }
     response.setContentType("text/html");
     response.getWriter().println("");
   }
