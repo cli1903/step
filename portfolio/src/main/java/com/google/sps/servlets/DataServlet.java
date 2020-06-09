@@ -70,11 +70,10 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
-    
-    if (userService.isUserLoggedIn()) {
-      int num_comments;
-      String user_num = request.getParameter(COMMENT_NUM_PARAM);
+    int num_comments;
+    String user_num = request.getParameter(COMMENT_NUM_PARAM);
 
+    if (userService.isUserLoggedIn()) {
       try {
       num_comments = Integer.parseInt(user_num);
       } catch (NumberFormatException e) {
@@ -85,7 +84,7 @@ public class DataServlet extends HttpServlet {
       if (num_comments < 0 || num_comments > 15) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setContentType("application/json");
-        response.getWriter().println("{\"type\": \"VALIDATION\", \"message\": \"Please enter an integer between 0 and 15.\"}");
+        response.getWriter().println(gson.toJson("Please enter an integer between 0 and 15."));
         return;
       }
 
@@ -98,7 +97,7 @@ public class DataServlet extends HttpServlet {
 
       PreparedQuery results = datastore.prepare(commentQuery);
 
-      String comments = "";
+      List<Comment> comments = new ArrayList<>();
 
       int counter = 0;
       for (Entity entity : results.asIterable()) {
@@ -108,30 +107,19 @@ public class DataServlet extends HttpServlet {
         String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
         String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
 
-        String commentHtml = commentParamsToHtml(name, text);
-        comments += commentHtml;
+        Comment comment = new Comment(text, name);
+        comments.add(comment);
         counter++;
       }
 
-      response.setContentType("text/html");
-      response.getWriter().println(comments + "<br>");
-
-      String urlToRedirectToAfterUserLogsOut = "/comments.html";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-
-      response.setContentType("text/html");
-      response.getWriter().println("<a href=" + logoutUrl + "> <button> Log Out </button> </a>");
-
+      String json = gson.toJson(comments);
+      response.setContentType("appplication/json");
+      response.getWriter().println(json);
+    
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/comments.html";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
       response.setContentType("text/html");
-      response.getWriter().println("<p> Please log in to see comments </p>");
-      response.getWriter().println("<a href=" + loginUrl + "> <button> Log In </button> </a>");
+      response.getWriter().println("Please log in to see / post comments.");
     }
-  }
-
-  public String commentParamsToHtml(String name, String text) {
-    return "<div class=\"comment\"> " + name + ": <li> " + text + " </li> </div> "; 
+    
   }
 }
