@@ -52,18 +52,29 @@ function addRandomDestination() {
 }
 
 
+async function checkLoggedIn() {
+  const loginResponse = await fetch('/login', {method: 'POST'});
+  const loginJson = await loginResponse.json();
+  addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
+  console.log(loginJson.isLoggedIn);
+  return loginJson.isLoggedIn;
+}
+
 /**
  * adds response from servlet
  */
-function setComments() {
-  num_comments = document.getElementById('num-comments').value;
-  order = document.getElementById('order').value;
-  fetch('/data?num-comments=' + num_comments + '&order=' + order)
+async function setComments() {
+  commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
+
+  var isLoggedIn = await checkLoggedIn()
+  if (isLoggedIn) {
+    console.log('here');
+    num_comments = document.getElementById('num-comments').value;
+    order = document.getElementById('order').value;
+    fetch('/data?num-comments=' + num_comments + '&order=' + order)
       .then((response) => response.json())
       .then((obj) => {
-        commentContainer = document.getElementById('comments-container');
-        commentContainer.innerHTML = '';
-
         if (num_comments >= 0 && num_comments <= 15) {
           for (let i = 0; i < obj.length; i++) {
             commentContainer.appendChild(createListComment(obj[i]));
@@ -73,6 +84,12 @@ function setComments() {
           commentContainer.appendChild(errorMssg);
         }
       });
+  } else {
+    const errMssg = document.createElement('p');
+    errMssg.innerText = 'Please log in to see comments.';
+    commentContainer.appendChild(errMssg);
+  }
+  
 }
 
 function delComments() {
@@ -102,4 +119,18 @@ function createErrorMssg(errorJson) {
   errMssg = document.createElement('p');
   errMssg.innerText = errorJson;
   return errMssg;
+}
+
+function addLogInOutButton(url, isLoggedIn) {
+  const link = document.getElementById('login');
+  link.href = url;
+
+  const button = document.getElementById('login-button');
+
+  if (isLoggedIn) {
+    button.innerText = 'Log Out';
+  } else {
+    button.innerText = 'Log In';
+  }
+  
 }

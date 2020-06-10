@@ -37,6 +37,13 @@ public class DataDeleteServlet extends HttpServlet {
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private final Gson gson = new Gson();
 
+  /*
+  public DataDeleteServlet(DatastoreService datastore, Gson gson) {
+    this.datastore = datastore;
+    this.gson = gson;
+  }
+  */
+
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query commentQuery = new Query("Comment");
     PreparedQuery results = datastore.prepare(commentQuery);
