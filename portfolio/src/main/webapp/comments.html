@@ -7,7 +7,7 @@
         <script src="script.js"></script>
     </head>
 
-    <body onload="setComments()">
+    <body onload="setPage()">
         <div class="nav">
           <a href="index.html#home"> Home </a>
           <a href="index.html#content"> About Me </a>
@@ -21,29 +21,14 @@
 
             <a id="login"> <button id="login-button"> </button> </a>
             <br><br>
-            <label for="num-comments"> how many comments to display: </label>
-            <input type="number" name="num-comments" id="num-comments" min="0" max="15" value="5" onchange="setComments()">
-            <br><br>
-            <label for="order"> order comments by: </label>
-            <select name="order" id="order" onchange="setComments()"> 
-              <option value="desc"> Newest </option>
-              <option value="asc"> Oldest </option>
-            </select>
+
+            <div id="custom-elements"></div>
+            
             <br>
             <div id="comments-container"></div>
             <br>
-            <button onclick="delComments()"> Delete All Comments </button>
-            <br><br>
 
-            <form action="/data" method="POST">     
-              <p> Leave a comment! </p>
-              <label for="name"> name/username </label>
-              <input type="text" id="name" name="name"></input>
-              <br><br>
-              <textarea name="comment"></textarea>
-              <br>
-              <input type="submit">
-            </form>
+            <form id="comment-form" action="/data" method="POST"></form>
         </div>
     </body>
 </html>

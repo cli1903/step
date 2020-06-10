@@ -52,12 +52,28 @@ function addRandomDestination() {
 }
 
 
-async function checkLoggedIn() {
+async function setPage() {
   const loginResponse = await fetch('/login', {method: 'POST'});
   const loginJson = await loginResponse.json();
   addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
-  console.log(loginJson.isLoggedIn);
-  return loginJson.isLoggedIn;
+
+  if (loginJson.isLoggedIn) {
+    const customContainer = document.getElementById("custom-elements");
+    const formContainer = document.getElementById("comment-form");
+    if (customContainer.innerHTML == '') {
+      addCustomizations(customContainer);
+    }
+    
+    if (formContainer.innerHTML == '') {
+      addForm(formContainer);
+    }
+    setComments();
+
+  } else {
+    const commentContainer = document.getElementById('comments-container');
+    const errElement = createErrorMssg('Please log in to see comments.');
+    commentContainer.appendChild(errElement);
+  }
 }
 
 /**
@@ -67,29 +83,22 @@ async function setComments() {
   commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
 
-  var isLoggedIn = await checkLoggedIn();
-  if (isLoggedIn) {
-    num_comments = document.getElementById('num-comments').value;
-    order = document.getElementById('order').value;
+  num_comments = document.getElementById('num-comments').value;
+  order = document.getElementById('order').value;
 
-    const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+  const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
 
-    if (response.ok) {
-      const responseJson = await response.json();
-      for (let i = 0; i < responseJson.length; i++) {
-            commentContainer.appendChild(createListComment(responseJson[i]));
-      }
-
-    } else {
-      const errMssg = await response.text();
-      const errElement = createErrorMssg(errMssg);
-      commentContainer.appendChild(errElement);
+  if (response.ok) {
+    const responseJson = await response.json();
+    for (let i = 0; i < responseJson.length; i++) {
+          commentContainer.appendChild(createListComment(responseJson[i]));
     }
 
   } else {
-    const errElement = createErrorMssg('Please log in to see comments.');
+    const errMssg = await response.text();
+    const errElement = createErrorMssg(errMssg);
     commentContainer.appendChild(errElement);
-  }  
+  }
 }
 
 async function delComments() {
@@ -131,4 +140,28 @@ function addLogInOutButton(url, isLoggedIn) {
     button.innerText = 'Log In';
   }
   
+}
+
+function addCustomizations(container) {
+  const customElementsHTML  = 
+    '<label for="num-comments"> how many comments to display: </label>' +
+    '<input type="number" name="num-comments" id="num-comments" min="0"' + 
+    'max="15" value="5" onchange="setPage()"> <br><br>' +
+    '<label for="order"> order comments by: </label>' +
+    '<select name="order" id="order" onchange="setPage()">' +
+    '<option value="desc"> Newest </option>' + 
+    '<option value="asc"> Oldest </option> </select> <br><br>' + 
+    '<button onclick="delComments()"> Delete All Comments </button>'
+
+  container.innerHTML = customElementsHTML;
+}
+
+function addForm(formElement) {
+  const formElementsHTML = '<p> Leave a comment! </p>' +
+    '<label for="name"> name/username </label>' +
+    '<input type="text" id="name" name="name"></input> <br><br>' +
+    '<textarea name="comment"></textarea> <br>' +
+    '<input type="submit">'
+
+  formElement.innerHTML = formElementsHTML;
 }
