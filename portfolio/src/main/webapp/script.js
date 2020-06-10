@@ -67,43 +67,41 @@ async function setComments() {
   commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
 
-  var isLoggedIn = await checkLoggedIn()
+  var isLoggedIn = await checkLoggedIn();
   if (isLoggedIn) {
-    console.log('here');
     num_comments = document.getElementById('num-comments').value;
     order = document.getElementById('order').value;
-    fetch('/data?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => response.json())
-      .then((obj) => {
-        if (num_comments >= 0 && num_comments <= 15) {
-          for (let i = 0; i < obj.length; i++) {
-            commentContainer.appendChild(createListComment(obj[i]));
-          }
-        } else {
-          const errorMssg = createErrorMssg(obj);
-          commentContainer.appendChild(errorMssg);
-        }
-      });
+
+    const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+
+    if (response.ok) {
+      const responseJson = await response.json();
+      for (let i = 0; i < responseJson.length; i++) {
+            commentContainer.appendChild(createListComment(responseJson[i]));
+      }
+
+    } else {
+      const errMssg = await response.text();
+      const errElement = createErrorMssg(errMssg);
+      commentContainer.appendChild(errElement);
+    }
+
   } else {
-    const errMssg = document.createElement('p');
-    errMssg.innerText = 'Please log in to see comments.';
-    commentContainer.appendChild(errMssg);
-  }
-  
+    const errElement = createErrorMssg('Please log in to see comments.');
+    commentContainer.appendChild(errElement);
+  }  
 }
 
-function delComments() {
-  fetch('/delete-data', {method: 'POST'}).then((response) => {
-    contentType = response.headers.get('content-type');
-    const commentContainer = document.getElementById('comments-container');
-    if (contentType == 'text/html') {
-      commentContainer.innerHTML = '';
-    } else {
-      const errorJson = response.json();
-      const errorMssg = createErrorMssg(errorJson);
-      commentContainer.appendChild(errorMssg);
-    }
-  })
+async function delComments() {
+  const commentContainer = document.getElementById('comments-container');
+  const response = await fetch('/delete-data', {method: 'POST'});
+  if (response.ok) {
+    commentContainer.innerHTML = '';
+  } else {
+    const errMssg = await response.text();
+    const errElement = createErrorMssg(errMssg);
+    commentContainer.appendChild(errElement);
+  }
 }
 
 function createListComment(comment) {
@@ -115,9 +113,9 @@ function createListComment(comment) {
   return liElemName;
 }
 
-function createErrorMssg(errorJson) {
+function createErrorMssg(errorMssg) {
   errMssg = document.createElement('p');
-  errMssg.innerText = errorJson;
+  errMssg.innerText = errorMssg;
   return errMssg;
 }
 
