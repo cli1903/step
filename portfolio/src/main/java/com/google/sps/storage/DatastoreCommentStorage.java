@@ -24,16 +24,16 @@ public class DatastoreCommentStorage implements CommentStorage {
 
   @Override
   public void insert(Comment comment) {
-    String name = comment.name;
+    String name = comment.name();
 
-    if (comment.name.equals("")) {
+    if (comment.name().equals("")) {
       name = "Anonymous";
     }
 
     Entity commentEntity = new Entity(ENTITY_QUERY);
-    commentEntity.setProperty(ENTITY_TEXT_PARAM, comment.text);
+    commentEntity.setProperty(ENTITY_TEXT_PARAM, comment.text());
     commentEntity.setProperty(ENTITY_NAME_PARAM, name);
-    commentEntity.setProperty(ENTITY_TIME_PARAM, comment.timePosted);
+    commentEntity.setProperty(ENTITY_TIME_PARAM, comment.timePosted());
 
     datastore.put(commentEntity);
   }
@@ -61,7 +61,8 @@ public class DatastoreCommentStorage implements CommentStorage {
       String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
       long timePosted = (long) entity.getProperty(ENTITY_TIME_PARAM);
 
-      Comment comment = new Comment(text, name, timePosted);
+      Comment.Builder commentBuilder = Comment.builder();
+      Comment comment = commentBuilder.setName(name).setText(text).setTimePosted(timePosted).build();
       comments.add(comment);
       counter++;
     }

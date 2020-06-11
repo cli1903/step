@@ -53,7 +53,8 @@ public class DataServlet extends HttpServlet {
 
     long timestamp = System.currentTimeMillis();
 
-    Comment comment = new Comment(commentText, name, timestamp);
+    Comment.Builder commentBuilder = Comment.builder();
+    Comment comment = commentBuilder.setName(name).setText(commentText).setTimePosted(timestamp).build();
 
     try {
       storage.insert(comment);
