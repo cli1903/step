@@ -37,15 +37,6 @@ public class DataDeleteServlet extends HttpServlet {
   private final DatastoreService datastore;
   private final Gson gson;
 
-  /**
- * Uses a default version of {@link DatastoreService} and {@link Gson}.
- * <p>
- * TODO: Remove this once this uses Guice.
- */
-  public DataDeleteServlet() {
-    this(DatastoreServiceFactory.getDatastoreService(), new Gson());
-  }
-
   public DataDeleteServlet(DatastoreService datastore, Gson gson) {
     this.datastore = datastore;
     this.gson = gson;
