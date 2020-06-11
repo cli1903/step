@@ -61,13 +61,13 @@ async function setPage() {
   const formContainer = document.getElementById("comment-form");
 
   if (loginJson.isLoggedIn) { 
-    showHideElement(customContainer, false);
-    showHideElement(formContainer, false);
+    shouldHideElement(customContainer, false);
+    shouldHideElement(formContainer, false);
     setComments();
 
   } else {
-    showHideElement(customContainer, true);
-    showHideElement(formContainer, true);
+    shouldHideElement(customContainer, true);
+    shouldHideElement(formContainer, true);
     const commentContainer = document.getElementById('comments-container');
     const errElement = createErrorMssg('Please log in to see comments.');
     commentContainer.appendChild(errElement);
@@ -140,7 +140,7 @@ function addLogInOutButton(url, isLoggedIn) {
   
 }
 
-function showHideElement(container, hide) {
+function shouldHideElement(container, hide) {
   if (hide) {
     container.style.display = 'none';
   } else {
