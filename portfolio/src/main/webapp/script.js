@@ -52,41 +52,55 @@ function addRandomDestination() {
 }
 
 
+async function checkLoggedIn() {
+  const loginResponse = await fetch('/login', {method: 'POST'});
+  const loginJson = await loginResponse.json();
+  addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
+  return loginJson.isLoggedIn;
+}
+
 /**
  * adds response from servlet
  */
-function setComments() {
-  num_comments = document.getElementById('num-comments').value;
-  order = document.getElementById('order').value;
-  fetch('/data?num-comments=' + num_comments + '&order=' + order)
-      .then((response) => response.json())
-      .then((obj) => {
-        commentContainer = document.getElementById('comments-container');
-        commentContainer.innerHTML = '';
+async function setComments() {
+  commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
 
-        if (num_comments >= 0 && num_comments <= 15) {
-          for (let i = 0; i < obj.length; i++) {
-            commentContainer.appendChild(createListComment(obj[i]));
-          }
-        } else {
-          const errorMssg = createErrorMssg(obj);
-          commentContainer.appendChild(errorMssg);
-        }
-      });
+  var isLoggedIn = await checkLoggedIn();
+  if (isLoggedIn) {
+    num_comments = document.getElementById('num-comments').value;
+    order = document.getElementById('order').value;
+
+    const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+
+    if (response.ok) {
+      const responseJson = await response.json();
+      for (let i = 0; i < responseJson.length; i++) {
+            commentContainer.appendChild(createListComment(responseJson[i]));
+      }
+
+    } else {
+      const errMssg = await response.text();
+      const errElement = createErrorMssg(errMssg);
+      commentContainer.appendChild(errElement);
+    }
+
+  } else {
+    const errElement = createErrorMssg('Please log in to see comments.');
+    commentContainer.appendChild(errElement);
+  }  
 }
 
-function delComments() {
-  fetch('/delete-data', {method: 'POST'}).then((response) => {
-    contentType = response.headers.get('content-type');
-    const commentContainer = document.getElementById('comments-container');
-    if (contentType == 'text/html') {
-      commentContainer.innerHTML = '';
-    } else {
-      const errorJson = response.json();
-      const errorMssg = createErrorMssg(errorJson);
-      commentContainer.appendChild(errorMssg);
-    }
-  })
+async function delComments() {
+  const commentContainer = document.getElementById('comments-container');
+  const response = await fetch('/delete-data', {method: 'DELETE'});
+  if (response.ok) {
+    commentContainer.innerHTML = '';
+  } else {
+    const errMssg = await response.text();
+    const errElement = createErrorMssg(errMssg);
+    commentContainer.appendChild(errElement);
+  }
 }
 
 function createListComment(comment) {
@@ -98,8 +112,22 @@ function createListComment(comment) {
   return liElemName;
 }
 
-function createErrorMssg(errorJson) {
+function createErrorMssg(errorMssg) {
   errMssg = document.createElement('p');
-  errMssg.innerText = errorJson;
+  errMssg.innerText = errorMssg;
   return errMssg;
+}
+
+function addLogInOutButton(url, isLoggedIn) {
+  const link = document.getElementById('login');
+  link.href = url;
+
+  const button = document.getElementById('login-button');
+
+  if (isLoggedIn) {
+    button.innerText = 'Log Out';
+  } else {
+    button.innerText = 'Log In';
+  }
+  
 }

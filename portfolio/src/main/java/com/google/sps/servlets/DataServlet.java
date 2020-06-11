@@ -33,6 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private final DatastoreService datastore;
+  private final Gson gson; 
+  
   private static final String COMMENT_TEXT_PARAM = "comment";
   private static final String COMMENT_NAME_PARAM = "name";
   private static final String COMMENT_NUM_PARAM = "num-comments";
@@ -40,7 +43,22 @@ public class DataServlet extends HttpServlet {
   private static final String ENTITY_TEXT_PARAM = "comment-text";
   private static final String ENTITY_NAME_PARAM = "username";
   private static final String ENTITY_TIME_PARAM = "time-posted";
-  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+  /**
+ * Uses a default version of {@link DatastoreService} and {@link Gson}.
+ * <p>
+ * TODO: Remove this once this uses Guice.
+ */
+  public DataServlet() {
+    this(DatastoreServiceFactory.getDatastoreService(), new Gson());
+  }
+
+  public DataServlet(DatastoreService datastore, Gson gson) {
+    this.datastore = datastore;
+    this.gson = gson;
+  }
+
+  
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,7 +84,6 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Gson gson = new Gson();
     int num_comments;
     String user_num = request.getParameter(COMMENT_NUM_PARAM);
 
