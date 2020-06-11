@@ -33,6 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private final DatastoreService datastore;
+  private final Gson gson; 
+  
   private static final String COMMENT_TEXT_PARAM = "comment";
   private static final String COMMENT_NAME_PARAM = "name";
   private static final String COMMENT_NUM_PARAM = "num-comments";
@@ -41,15 +44,21 @@ public class DataServlet extends HttpServlet {
   private static final String ENTITY_NAME_PARAM = "username";
   private static final String ENTITY_TIME_PARAM = "time-posted";
 
-  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private final Gson gson = new Gson(); 
+  /**
+ * Uses a default version of {@link DatastoreService} and {@link Gson}.
+ * <p>
+ * TODO: Remove this once this uses Guice.
+ */
+  public DataServlet() {
+    this(DatastoreServiceFactory.getDatastoreService(), new Gson());
+  }
 
-  /*
   public DataServlet(DatastoreService datastore, Gson gson) {
     this.datastore = datastore;
     this.gson = gson;
   }
-  */
+
+  
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

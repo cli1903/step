@@ -28,17 +28,32 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-  private final UserService userService = UserServiceFactory.getUserService();
-  private final static String urlToRedirectTo = "/comments.html";
+  private final UserService userService;
 
-/*
+  private static final String URL_TO_REDIRECT_TO = "/comments.html";
+
+  /**
+ * Uses a default version of {@link UserService}.
+ * <p>
+ * TODO: Remove this once this uses Guice.
+ */
+  public LoginServlet() {  
+    this.userService = UserServiceFactory.getUserService();
+  }
+
+  /*
   public LoginServlet(UserService userService, Gson gson) {
     this.userService = userService;
     this.gson = gson;
-  } */
+  }
+  */
+
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /**
+     * remove this builder once this uses Guice 
+     */
     GsonBuilder builder = new GsonBuilder();
     builder.registerTypeAdapter(LoginResponse.class, new GsonLoginResponseAdapter());
     Gson gson = builder.create();
@@ -46,10 +61,10 @@ public class LoginServlet extends HttpServlet {
     LoginResponse.Builder logInOutBuilder = LoginResponse.builder();
 
     if (userService.isUserLoggedIn()) {
-      String logoutUrl = userService.createLogoutURL(urlToRedirectTo);
+      String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_TO);
       logInOutBuilder = logInOutBuilder.setUrl(logoutUrl).setIsLoggedIn(true);
     } else {
-      String loginUrl = userService.createLoginURL(urlToRedirectTo);
+      String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_TO);
       logInOutBuilder = logInOutBuilder.setUrl(loginUrl).setIsLoggedIn(false);
     }
 
