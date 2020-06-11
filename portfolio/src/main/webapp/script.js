@@ -52,11 +52,26 @@ function addRandomDestination() {
 }
 
 
-async function checkLoggedIn() {
+async function setPage() {
   const loginResponse = await fetch('/login', {method: 'POST'});
   const loginJson = await loginResponse.json();
   addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
-  return loginJson.isLoggedIn;
+
+  const customContainer = document.getElementById("custom-elements");
+  const formContainer = document.getElementById("comment-form");
+
+  if (loginJson.isLoggedIn) { 
+    shouldHideElement(customContainer, false);
+    shouldHideElement(formContainer, false);
+    setComments();
+
+  } else {
+    shouldHideElement(customContainer, true);
+    shouldHideElement(formContainer, true);
+    const commentContainer = document.getElementById('comments-container');
+    const errElement = createErrorMssg('Please log in to see comments.');
+    commentContainer.appendChild(errElement);
+  }
 }
 
 /**
@@ -66,29 +81,22 @@ async function setComments() {
   commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
 
-  var isLoggedIn = await checkLoggedIn();
-  if (isLoggedIn) {
-    num_comments = document.getElementById('num-comments').value;
-    order = document.getElementById('order').value;
+  num_comments = document.getElementById('num-comments').value;
+  order = document.getElementById('order').value;
 
-    const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+  const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
 
-    if (response.ok) {
-      const responseJson = await response.json();
-      for (let i = 0; i < responseJson.length; i++) {
-            commentContainer.appendChild(createListComment(responseJson[i]));
-      }
-
-    } else {
-      const errMssg = await response.text();
-      const errElement = createErrorMssg(errMssg);
-      commentContainer.appendChild(errElement);
+  if (response.ok) {
+    const responseJson = await response.json();
+    for (let i = 0; i < responseJson.length; i++) {
+          commentContainer.appendChild(createListComment(responseJson[i]));
     }
 
   } else {
-    const errElement = createErrorMssg('Please log in to see comments.');
+    const errMssg = await response.text();
+    const errElement = createErrorMssg(errMssg);
     commentContainer.appendChild(errElement);
-  }  
+  }
 }
 
 async function delComments() {
@@ -131,3 +139,13 @@ function addLogInOutButton(url, isLoggedIn) {
   }
   
 }
+
+function shouldHideElement(container, hide) {
+  if (hide) {
+    container.style.display = 'none';
+  } else {
+    container.style.display = 'block';
+  }
+}
+
+
