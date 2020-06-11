@@ -34,16 +34,25 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/delete-data")
 public class DataDeleteServlet extends HttpServlet {
-  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private final DatastoreService datastore;
+  private final Gson gson;
 
-  /*
+  /**
+ * Uses a default version of {@link DatastoreService} and {@link Gson}.
+ * <p>
+ * TODO: Remove this once this uses Guice.
+ */
+  public DataDeleteServlet() {
+    this(DatastoreServiceFactory.getDatastoreService(), new Gson());
+  }
+
   public DataDeleteServlet(DatastoreService datastore, Gson gson) {
     this.datastore = datastore;
     this.gson = gson;
   }
-  */
 
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  @Override
+  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query commentQuery = new Query("Comment");
     PreparedQuery results = datastore.prepare(commentQuery);
 
@@ -56,7 +65,7 @@ public class DataDeleteServlet extends HttpServlet {
         response.setContentType("text/html");
         response.getWriter().println("error deleting comment(s)");
       }
-    }   
+    }
     response.setContentType("text/html");
     response.getWriter().println("");
   }

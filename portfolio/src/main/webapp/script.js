@@ -101,7 +101,7 @@ async function setComments() {
 
 async function delComments() {
   const commentContainer = document.getElementById('comments-container');
-  const response = await fetch('/delete-data', {method: 'POST'});
+  const response = await fetch('/delete-data', {method: 'DELETE'});
   if (response.ok) {
     commentContainer.innerHTML = '';
   } else {
