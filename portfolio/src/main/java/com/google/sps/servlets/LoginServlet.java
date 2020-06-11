@@ -14,12 +14,10 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.serialization.GsonLoginResponseAdapter;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.LoginResponse;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,12 +42,6 @@ public class LoginServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    /**
-     * remove this builder once this uses Guice 
-     */
-    GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(LoginResponse.class, new GsonLoginResponseAdapter());
-    Gson gson = builder.create();
 
     LoginResponse.Builder logInOutBuilder = LoginResponse.builder();
 
