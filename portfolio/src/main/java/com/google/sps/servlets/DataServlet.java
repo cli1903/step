@@ -29,9 +29,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.inject.Singleton;
+import com.google.inject.Inject;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@Singleton
 public class DataServlet extends HttpServlet {
   private final DatastoreService datastore;
   private final Gson gson; 
@@ -44,6 +46,7 @@ public class DataServlet extends HttpServlet {
   private static final String ENTITY_NAME_PARAM = "username";
   private static final String ENTITY_TIME_PARAM = "time-posted";
 
+  @Inject
   public DataServlet(DatastoreService datastore, Gson gson) {
     this.datastore = datastore;
     this.gson = gson;

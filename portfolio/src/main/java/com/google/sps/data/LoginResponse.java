@@ -36,4 +36,3 @@ public abstract class LoginResponse {
     public abstract LoginResponse build();
   }
 }
-

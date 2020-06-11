@@ -9,8 +9,8 @@ import com.google.inject.servlet.ServletModule;
 public class ServletsModule extends ServletModule {
   @Override
   protected void configureServlets() {
-    serve("/comments").with(DataServlet.class);
-    serve("/comments").with(DataDeleteServlet.class);
-    serve("/comments").with(LoginServlet.class);
+    serve("/data").with(DataServlet.class);
+    serve("/delete-data").with(DataDeleteServlet.class);
+    serve("/login").with(LoginServlet.class);
   }
 }

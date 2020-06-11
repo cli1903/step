@@ -6,8 +6,8 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.sps.serialization.GsonLoginResponseSerializationModule;
 import com.google.sps.servlets.ServletsModule;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.sps.factory.DatastoreBindingModule;
+import com.google.sps.factory.UserServiceBindingModule;
 
 /**
  * Provides an {@link Injector} configured to serve the SPS application routes.
@@ -17,6 +17,8 @@ public class SpsGuiceServletContextListener extends GuiceServletContextListener 
   @Override
   protected Injector getInjector() {
     return Guice.createInjector( 
+        new DatastoreBindingModule(),
+        new UserServiceBindingModule(),
         new GsonLoginResponseSerializationModule(), 
         new ServletsModule());
   }

@@ -31,12 +31,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.inject.Singleton;
+import com.google.inject.Inject;
 
-@WebServlet("/delete-data")
+@Singleton
 public class DataDeleteServlet extends HttpServlet {
   private final DatastoreService datastore;
   private final Gson gson;
 
+  @Inject
   public DataDeleteServlet(DatastoreService datastore, Gson gson) {
     this.datastore = datastore;
     this.gson = gson;
