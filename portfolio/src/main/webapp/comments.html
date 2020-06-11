@@ -22,13 +22,32 @@
             <a id="login"> <button id="login-button"> </button> </a>
             <br><br>
 
-            <div id="custom-elements"></div>
+            <div id="custom-elements">
+              <label for="num-comments"> how many comments to display: </label>
+              <input type="number" name="num-comments" id="num-comments" min="0" max="15" value="5" onchange="setPage()">
+              <br><br>
+              <label for="order"> order comments by: </label>
+              <select name="order" id="order" onchange="setPage()">
+                <option value="desc"> Newest </option>
+                <option value="asc"> Oldest </option>
+              </select>
+              <br><br>
+              <button onclick="delComments()"> Delete All Comments </button>
+            </div>
             
             <br>
             <div id="comments-container"></div>
             <br>
 
-            <form id="comment-form" action="/data" method="POST"></form>
+            <form id="comment-form" action="/data" method="POST">
+              <p> Leave a comment! </p>
+              <label for="name"> name/username </label>
+              <input type="text" id="name" name="name"></input>
+              <br><br>
+              <textarea name="comment"></textarea>
+              <br>
+              <input type="submit">
+            </form>
         </div>
     </body>
 </html>

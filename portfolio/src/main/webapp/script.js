@@ -57,19 +57,17 @@ async function setPage() {
   const loginJson = await loginResponse.json();
   addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
 
-  if (loginJson.isLoggedIn) {
-    const customContainer = document.getElementById("custom-elements");
-    const formContainer = document.getElementById("comment-form");
-    if (customContainer.innerHTML == '') {
-      addCustomizations(customContainer);
-    }
-    
-    if (formContainer.innerHTML == '') {
-      addForm(formContainer);
-    }
+  const customContainer = document.getElementById("custom-elements");
+  const formContainer = document.getElementById("comment-form");
+
+  if (loginJson.isLoggedIn) { 
+    showHideElement(customContainer, false);
+    showHideElement(formContainer, false);
     setComments();
 
   } else {
+    showHideElement(customContainer, true);
+    showHideElement(formContainer, true);
     const commentContainer = document.getElementById('comments-container');
     const errElement = createErrorMssg('Please log in to see comments.');
     commentContainer.appendChild(errElement);
@@ -142,26 +140,12 @@ function addLogInOutButton(url, isLoggedIn) {
   
 }
 
-function addCustomizations(container) {
-  const customElementsHTML  = 
-    '<label for="num-comments"> how many comments to display: </label>' +
-    '<input type="number" name="num-comments" id="num-comments" min="0"' + 
-    'max="15" value="5" onchange="setPage()"> <br><br>' +
-    '<label for="order"> order comments by: </label>' +
-    '<select name="order" id="order" onchange="setPage()">' +
-    '<option value="desc"> Newest </option>' + 
-    '<option value="asc"> Oldest </option> </select> <br><br>' + 
-    '<button onclick="delComments()"> Delete All Comments </button>'
-
-  container.innerHTML = customElementsHTML;
+function showHideElement(container, hide) {
+  if (hide) {
+    container.style.display = 'none';
+  } else {
+    container.style.display = 'block';
+  }
 }
 
-function addForm(formElement) {
-  const formElementsHTML = '<p> Leave a comment! </p>' +
-    '<label for="name"> name/username </label>' +
-    '<input type="text" id="name" name="name"></input> <br><br>' +
-    '<textarea name="comment"></textarea> <br>' +
-    '<input type="submit">'
 
-  formElement.innerHTML = formElementsHTML;
-}
