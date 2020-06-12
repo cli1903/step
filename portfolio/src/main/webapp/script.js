@@ -57,10 +57,10 @@ async function setPage() {
   const loginJson = await loginResponse.json();
   addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
 
-  const customContainer = document.getElementById("custom-elements");
-  const formContainer = document.getElementById("comment-form");
+  const customContainer = document.getElementById('custom-elements');
+  const formContainer = document.getElementById('comment-form');
 
-  if (loginJson.isLoggedIn) { 
+  if (loginJson.isLoggedIn) {
     shouldHideElement(customContainer, false);
     shouldHideElement(formContainer, false);
     setComments();
@@ -84,12 +84,13 @@ async function setComments() {
   num_comments = document.getElementById('num-comments').value;
   order = document.getElementById('order').value;
 
-  const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+  const response =
+      await fetch('/data?num-comments=' + num_comments + '&order=' + order);
 
   if (response.ok) {
     const responseJson = await response.json();
     for (let i = 0; i < responseJson.length; i++) {
-          commentContainer.appendChild(createListComment(responseJson[i]));
+      commentContainer.appendChild(createListComment(responseJson[i]));
     }
 
   } else {
@@ -140,7 +141,6 @@ function addLogInOutButton(url, isLoggedIn) {
   } else {
     button.innerText = 'Log In';
   }
-  
 }
 
 function shouldHideElement(container, hide) {
@@ -150,5 +150,3 @@ function shouldHideElement(container, hide) {
     container.style.display = 'block';
   }
 }
-
-

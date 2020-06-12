@@ -1,20 +1,19 @@
 package com.google.sps.storage;
 
-import com.google.inject.Inject;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.sps.storage.CommentStorage;
+import com.google.inject.Inject;
 import com.google.sps.data.Comment;
+import com.google.sps.storage.CommentStorage;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class DatastoreCommentStorage implements CommentStorage {
   private final DatastoreService datastore;
@@ -41,8 +40,7 @@ public class DatastoreCommentStorage implements CommentStorage {
 
   @Override
   public List<Comment> listComments(int numComments, boolean sortAsc) {
-
-    Query commentQuery= new Query(ENTITY_TYPE);
+    Query commentQuery = new Query(ENTITY_TYPE);
     if (sortAsc) {
       commentQuery = commentQuery.addSort(ENTITY_TIME_PARAM, SortDirection.ASCENDING);
     } else {
@@ -55,7 +53,7 @@ public class DatastoreCommentStorage implements CommentStorage {
 
     ArrayList<Comment> comments = new ArrayList<>();
 
-    for (Entity entity: entities) {
+    for (Entity entity : entities) {
       comments.add(entityToComment(entity));
     }
 
@@ -72,7 +70,6 @@ public class DatastoreCommentStorage implements CommentStorage {
       datastore.delete(key);
     }
   }
-
 
   public Comment entityToComment(Entity entity) {
     String name = (String) entity.getProperty(ENTITY_NAME_PARAM);

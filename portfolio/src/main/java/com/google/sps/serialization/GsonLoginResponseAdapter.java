@@ -14,15 +14,14 @@
 
 package com.google.sps.serialization;
 
-import com.google.sps.data.LoginResponse;
 import com.google.common.base.Strings;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.google.sps.data.LoginResponse;
 import java.io.IOException;
-
 
 public class GsonLoginResponseAdapter extends TypeAdapter<LoginResponse> {
   private static final String LOGIN_RESPONSE_URL_JSON_FIELD_NAME = "url";
@@ -71,7 +70,7 @@ public class GsonLoginResponseAdapter extends TypeAdapter<LoginResponse> {
 
     writer.name(LOGIN_RESPONSE_IS_LOGGED_IN_JSON_FIELD_NAME);
     writer.value(loginResponse.isLoggedIn());
-    
+
     writer.endObject();
   }
 }

@@ -14,15 +14,14 @@
 
 package com.google.sps.serialization;
 
-import com.google.sps.data.Comment;
 import com.google.common.base.Strings;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.google.sps.data.Comment;
 import java.io.IOException;
-
 
 public class GsonCommentAdapter extends TypeAdapter<Comment> {
   private static final String COMMENT_NAME_JSON_FIELD_NAME = "name";
@@ -72,11 +71,12 @@ public class GsonCommentAdapter extends TypeAdapter<Comment> {
     writeUnlessNullOrEmpty(writer, COMMENT_TEXT_JSON_FIELD_NAME, comment.text());
     writer.name(COMMENT_TIME_JSON_FIELD_NAME);
     writer.value(comment.timePosted());
-    
+
     writer.endObject();
   }
 
-  public void writeUnlessNullOrEmpty(JsonWriter writer, String name, String value) throws IOException {
+  public void writeUnlessNullOrEmpty(JsonWriter writer, String name, String value)
+      throws IOException {
     if (!Strings.isNullOrEmpty(value)) {
       writer.name(name);
       writer.value(value);

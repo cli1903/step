@@ -14,8 +14,11 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.sps.data.Comment;
+import com.google.sps.storage.CommentStorage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +26,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
-import com.google.sps.storage.CommentStorage;
 
 @Singleton
 public class DataDeleteServlet extends HttpServlet {
@@ -39,7 +39,8 @@ public class DataDeleteServlet extends HttpServlet {
   }
 
   @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     try {
       storage.deleteAll();
     } catch (Exception e) {
@@ -47,7 +48,7 @@ public class DataDeleteServlet extends HttpServlet {
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson("Error deleting comment"));
     }
-    
+
     response.setContentType("text/html");
     response.getWriter().println("");
   }

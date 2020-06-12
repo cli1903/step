@@ -14,8 +14,11 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.sps.data.Comment;
+import com.google.sps.storage.CommentStorage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +26,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
-import com.google.sps.storage.CommentStorage;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @Singleton
 public class DataServlet extends HttpServlet {
   private final CommentStorage storage;
-  private final Gson gson; 
+  private final Gson gson;
 
   private static final String COMMENT_TEXT_PARAM = "comment";
   private static final String COMMENT_NAME_PARAM = "name";
@@ -43,18 +43,16 @@ public class DataServlet extends HttpServlet {
     this.gson = gson;
   }
 
-  
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     String commentText = request.getParameter(COMMENT_TEXT_PARAM);
     String name = request.getParameter(COMMENT_NAME_PARAM);
 
     long timestamp = System.currentTimeMillis();
 
     Comment.Builder commentBuilder = Comment.builder();
-    Comment comment = commentBuilder.setName(name).setText(commentText).setTimePosted(timestamp).build();
+    Comment comment =
+        commentBuilder.setName(name).setText(commentText).setTimePosted(timestamp).build();
 
     try {
       storage.insert(comment);
@@ -67,7 +65,6 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/comments.html");
   }
 
-  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int numComments;
@@ -90,7 +87,7 @@ public class DataServlet extends HttpServlet {
     }
 
     try {
-      List<Comment> comments = storage.listComments(numComments, sortAsc); 
+      List<Comment> comments = storage.listComments(numComments, sortAsc);
 
       String json = gson.toJson(comments);
       response.setContentType("appplication/json;");
@@ -101,6 +98,5 @@ public class DataServlet extends HttpServlet {
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson("Error getting comments"));
     }
-    
   }
 }

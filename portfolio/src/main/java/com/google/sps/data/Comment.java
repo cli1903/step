@@ -2,19 +2,15 @@ package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
 
-
 @AutoValue
 public abstract class Comment {
-  
   public abstract String name();
   public abstract String text();
   public abstract long timePosted();
 
   public static Builder builder() {
     return new AutoValue_Comment.Builder();
-  } 
-
-
+  }
 
   @AutoValue.Builder
   public static abstract class Builder {

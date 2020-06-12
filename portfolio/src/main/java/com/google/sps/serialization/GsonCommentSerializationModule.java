@@ -7,7 +7,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.sps.data.Comment;
 
-
 public class GsonCommentSerializationModule extends AbstractModule {
   @Provides
   @Singleton

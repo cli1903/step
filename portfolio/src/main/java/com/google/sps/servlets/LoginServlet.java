@@ -16,15 +16,15 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.sps.data.LoginResponse;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.sps.data.LoginResponse;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
 
 @Singleton
 public class LoginServlet extends HttpServlet {
@@ -39,10 +39,8 @@ public class LoginServlet extends HttpServlet {
     this.gson = gson;
   }
 
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     LoginResponse.Builder logInOutBuilder = LoginResponse.builder();
 
     if (userService.isUserLoggedIn()) {
