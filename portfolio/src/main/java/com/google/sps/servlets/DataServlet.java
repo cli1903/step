@@ -76,13 +76,9 @@ public class DataServlet extends HttpServlet {
       numComments = Integer.parseInt(userNum);
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + userNum);
-      numComments = -1;
-    }
-
-    if (numComments < 0 || numComments > 15) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       response.setContentType("application/json");
-      response.getWriter().println(gson.toJson("Please enter an integer between 0 and 15."));
+      response.getWriter().println(gson.toJson("Invalid input for num-comments parameter"));
       return;
     }
 

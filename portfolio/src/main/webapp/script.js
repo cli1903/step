@@ -78,14 +78,35 @@ async function setPage() {
  * adds response from servlet
  */
 async function setComments() {
-  commentContainer = document.getElementById('comments-container');
+  const commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
 
-  num_comments = document.getElementById('num-comments').value;
+  const numCommentsElement = document.getElementById('num-comments')
+
+  try {
+    numComments = Number(numCommentsElement.value);
+  } catch {
+    numComments = -1;
+  }
+
   order = document.getElementById('order').value;
 
+  const minComments = numCommentsElement.min;
+  const maxComments = numCommentsElement.max;
+
+  if ((numComments % 1 != 0) || (numComments < minComments) ||
+      (numComments > maxComments)) {
+    const errString =
+        'Invalid input for num-comments: please enter an integer between ' +
+        minComments + ' and ' + maxComments;
+        
+    const errMssg = createErrorMssg(errString);
+    commentContainer.appendChild(errMssg);
+    return;
+  }
+
   const response =
-      await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+      await fetch('/data?num-comments=' + numComments + '&order=' + order);
 
   if (response.ok) {
     const responseJson = await response.json();
