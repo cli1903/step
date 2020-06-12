@@ -14,7 +14,7 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.GsonLoginResponseAdapter;
+import com.google.sps.serialization.GsonLoginResponseAdapter;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.LoginResponse;
@@ -25,28 +25,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.inject.Singleton;
+import com.google.inject.Inject;
 
-@WebServlet("/login")
+@Singleton
 public class LoginServlet extends HttpServlet {
   private final UserService userService;
+  private final Gson gson;
 
   private static final String URL_TO_REDIRECT_TO = "/comments.html";
 
-  /**
- * Uses a default version of {@link UserService}.
- * <p>
- * TODO: Remove this once this uses Guice.
- */
-  public LoginServlet() {  
-    this.userService = UserServiceFactory.getUserService();
-  }
-
-  /*
+  @Inject
   public LoginServlet(UserService userService, Gson gson) {
     this.userService = userService;
     this.gson = gson;
   }
-  */
 
 
   @Override
