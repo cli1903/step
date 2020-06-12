@@ -114,6 +114,9 @@ async function delComments() {
 function createListComment(comment) {
   const liElemName = document.createElement('li');
   const liElemComment = document.createElement('li');
+  if (comment.name == '') {
+    comment.name = 'Anonymous';
+  }
   liElemName.innerText = comment.name + ':';
   liElemComment.innerText = comment.text;
   liElemName.appendChild(liElemComment);

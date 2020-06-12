@@ -90,11 +90,12 @@ public class DataServlet extends HttpServlet {
     }
 
     try {
-      List<Comment> comments = storage.getNComments(numComments, sortAsc); 
+      List<Comment> comments = storage.listComments(numComments, sortAsc); 
 
       String json = gson.toJson(comments);
       response.setContentType("appplication/json;");
       response.getWriter().println(json);
+
     } catch (Exception e) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       response.setContentType("application/json");

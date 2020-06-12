@@ -27,6 +27,7 @@ import java.io.IOException;
 public class GsonCommentAdapter extends TypeAdapter<Comment> {
   private static final String COMMENT_NAME_JSON_FIELD_NAME = "name";
   private static final String COMMENT_TEXT_JSON_FIELD_NAME = "text";
+  private static final String COMMENT_TIME_JSON_FIELD_NAME = "timePosted";
 
   @Override
   public Comment read(JsonReader reader) throws IOException {
@@ -47,6 +48,8 @@ public class GsonCommentAdapter extends TypeAdapter<Comment> {
           case COMMENT_TEXT_JSON_FIELD_NAME:
             commentBuilder.setText(reader.nextString());
             break;
+          case COMMENT_TIME_JSON_FIELD_NAME:
+            commentBuilder.setTimePosted(reader.nextLong());
           default:
             throw new JsonParseException(
                 String.format("Unknown field name %s for type Comment", name));
@@ -67,6 +70,8 @@ public class GsonCommentAdapter extends TypeAdapter<Comment> {
 
     writeUnlessNullOrEmpty(writer, COMMENT_NAME_JSON_FIELD_NAME, comment.name());
     writeUnlessNullOrEmpty(writer, COMMENT_TEXT_JSON_FIELD_NAME, comment.text());
+    writer.name(COMMENT_TIME_JSON_FIELD_NAME);
+    writer.value(comment.timePosted());
     
     writer.endObject();
   }
