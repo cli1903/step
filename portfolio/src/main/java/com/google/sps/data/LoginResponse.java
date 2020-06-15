@@ -16,18 +16,14 @@ package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
 
-
 @AutoValue
 public abstract class LoginResponse {
-  
   public abstract String url();
   public abstract boolean isLoggedIn();
 
   public static Builder builder() {
     return new AutoValue_LoginResponse.Builder();
-  } 
-
-
+  }
 
   @AutoValue.Builder
   public static abstract class Builder {

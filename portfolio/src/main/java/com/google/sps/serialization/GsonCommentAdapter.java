@@ -20,57 +20,66 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.google.sps.data.LoginResponse;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 
-public class GsonLoginResponseAdapter extends TypeAdapter<LoginResponse> {
-  private static final String LOGIN_RESPONSE_URL_JSON_FIELD_NAME = "url";
-  private static final String LOGIN_RESPONSE_IS_LOGGED_IN_JSON_FIELD_NAME = "isLoggedIn";
+public class GsonCommentAdapter extends TypeAdapter<Comment> {
+  private static final String COMMENT_NAME_JSON_FIELD_NAME = "name";
+  private static final String COMMENT_TEXT_JSON_FIELD_NAME = "text";
+  private static final String COMMENT_TIME_JSON_FIELD_NAME = "timePosted";
 
   @Override
-  public LoginResponse read(JsonReader reader) throws IOException {
+  public Comment read(JsonReader reader) throws IOException {
     if (reader.peek() == JsonToken.NULL) {
       reader.nextNull();
       return null;
     }
-    LoginResponse.Builder loginResponseBuilder = LoginResponse.builder();
+    Comment.Builder commentBuilder = Comment.builder();
     reader.beginObject();
     while (reader.hasNext()) {
       JsonToken token = reader.peek();
       if (token.equals(JsonToken.NAME)) {
         String name = reader.nextName();
         switch (name) {
-          case LOGIN_RESPONSE_URL_JSON_FIELD_NAME:
-            loginResponseBuilder.setUrl(reader.nextString());
+          case COMMENT_NAME_JSON_FIELD_NAME:
+            commentBuilder.setName(reader.nextString());
             break;
-          case LOGIN_RESPONSE_IS_LOGGED_IN_JSON_FIELD_NAME:
-            loginResponseBuilder.setIsLoggedIn(reader.nextBoolean());
+          case COMMENT_TEXT_JSON_FIELD_NAME:
+            commentBuilder.setText(reader.nextString());
             break;
+          case COMMENT_TIME_JSON_FIELD_NAME:
+            commentBuilder.setTimePosted(reader.nextLong());
           default:
             throw new JsonParseException(
-                String.format("Unknown field name %s for type LoginResponse", name));
+                String.format("Unknown field name %s for type Comment", name));
         }
       }
     }
     reader.endObject();
-    return loginResponseBuilder.build();
+    return commentBuilder.build();
   }
 
   @Override
-  public void write(JsonWriter writer, LoginResponse loginResponse) throws IOException {
-    if (loginResponse == null) {
+  public void write(JsonWriter writer, Comment comment) throws IOException {
+    if (comment == null) {
       writer.nullValue();
       return;
     }
     writer.beginObject();
-    if (!Strings.isNullOrEmpty(loginResponse.url())) {
-      writer.name(LOGIN_RESPONSE_URL_JSON_FIELD_NAME);
-      writer.value(loginResponse.url());
-    }
 
-    writer.name(LOGIN_RESPONSE_IS_LOGGED_IN_JSON_FIELD_NAME);
-    writer.value(loginResponse.isLoggedIn());
+    writeUnlessNullOrEmpty(writer, COMMENT_NAME_JSON_FIELD_NAME, comment.name());
+    writeUnlessNullOrEmpty(writer, COMMENT_TEXT_JSON_FIELD_NAME, comment.text());
+    writer.name(COMMENT_TIME_JSON_FIELD_NAME);
+    writer.value(comment.timePosted());
 
     writer.endObject();
+  }
+
+  public void writeUnlessNullOrEmpty(JsonWriter writer, String name, String value)
+      throws IOException {
+    if (!Strings.isNullOrEmpty(value)) {
+      writer.name(name);
+      writer.value(value);
+    }
   }
 }
