@@ -14,16 +14,11 @@
 
 package com.google.sps.servlets;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.sps.data.Comment;
+import com.google.sps.storage.CommentStorage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,35 +26,29 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
 
 @Singleton
 public class DataDeleteServlet extends HttpServlet {
-  private final DatastoreService datastore;
+  private final CommentStorage storage;
   private final Gson gson;
 
   @Inject
-  public DataDeleteServlet(DatastoreService datastore, Gson gson) {
-    this.datastore = datastore;
+  public DataDeleteServlet(CommentStorage storage, Gson gson) {
+    this.storage = storage;
     this.gson = gson;
   }
 
   @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query commentQuery = new Query("Comment");
-    PreparedQuery results = datastore.prepare(commentQuery);
-
-    for (Entity entity : results.asIterable()) {
-      Key key = entity.getKey();
-      try {
-        datastore.delete(key);
-      } catch (Exception e) {
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        response.setContentType("text/html");
-        response.getWriter().println("error deleting comment(s)");
-      }
+  public void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    try {
+      storage.deleteAll();
+    } catch (Exception e) {
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.setContentType("application/json");
+      response.getWriter().println(gson.toJson("Error deleting comment"));
     }
+
     response.setContentType("text/html");
     response.getWriter().println("");
   }

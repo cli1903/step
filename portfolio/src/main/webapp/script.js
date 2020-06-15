@@ -57,10 +57,10 @@ async function setPage() {
   const loginJson = await loginResponse.json();
   addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
 
-  const customContainer = document.getElementById("custom-elements");
-  const formContainer = document.getElementById("comment-form");
+  const customContainer = document.getElementById('custom-elements');
+  const formContainer = document.getElementById('comment-form');
 
-  if (loginJson.isLoggedIn) { 
+  if (loginJson.isLoggedIn) {
     shouldHideElement(customContainer, false);
     shouldHideElement(formContainer, false);
     setComments();
@@ -78,18 +78,40 @@ async function setPage() {
  * adds response from servlet
  */
 async function setComments() {
-  commentContainer = document.getElementById('comments-container');
+  const commentContainer = document.getElementById('comments-container');
   commentContainer.innerHTML = '';
 
-  num_comments = document.getElementById('num-comments').value;
+  const numCommentsElement = document.getElementById('num-comments')
+
+  try {
+    numComments = Number(numCommentsElement.value);
+  } catch {
+    numComments = -1;
+  }
+
   order = document.getElementById('order').value;
 
-  const response = await fetch('/data?num-comments=' + num_comments + '&order=' + order);
+  const minComments = numCommentsElement.min;
+  const maxComments = numCommentsElement.max;
+
+  if ((numComments % 1 != 0) || (numComments < minComments) ||
+      (numComments > maxComments)) {
+    const errString =
+        'Invalid input for num-comments: please enter an integer between ' +
+        minComments + ' and ' + maxComments;
+        
+    const errMssg = createErrorMssg(errString);
+    commentContainer.appendChild(errMssg);
+    return;
+  }
+
+  const response =
+      await fetch('/data?num-comments=' + numComments + '&order=' + order);
 
   if (response.ok) {
     const responseJson = await response.json();
     for (let i = 0; i < responseJson.length; i++) {
-          commentContainer.appendChild(createListComment(responseJson[i]));
+      commentContainer.appendChild(createListComment(responseJson[i]));
     }
 
   } else {
@@ -114,6 +136,9 @@ async function delComments() {
 function createListComment(comment) {
   const liElemName = document.createElement('li');
   const liElemComment = document.createElement('li');
+  if (comment.name == '') {
+    comment.name = 'Anonymous';
+  }
   liElemName.innerText = comment.name + ':';
   liElemComment.innerText = comment.text;
   liElemName.appendChild(liElemComment);
@@ -137,7 +162,6 @@ function addLogInOutButton(url, isLoggedIn) {
   } else {
     button.innerText = 'Log In';
   }
-  
 }
 
 function shouldHideElement(container, hide) {
@@ -147,5 +171,3 @@ function shouldHideElement(container, hide) {
     container.style.display = 'block';
   }
 }
-
-
