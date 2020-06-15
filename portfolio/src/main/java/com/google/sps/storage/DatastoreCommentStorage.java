@@ -71,7 +71,7 @@ public class DatastoreCommentStorage implements CommentStorage {
     }
   }
 
-  public Comment entityToComment(Entity entity) {
+  public static Comment entityToComment(Entity entity) {
     String name = (String) entity.getProperty(ENTITY_NAME_PARAM);
     String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
     long timePosted = (long) entity.getProperty(ENTITY_TIME_PARAM);
