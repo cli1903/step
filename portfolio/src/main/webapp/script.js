@@ -150,7 +150,7 @@ function shouldHideElement(container, hide) {
 
 function initMap() {
   const tokyo = {lat: 35.668, lng: 139.723};
-  const hachi = {lat: 35.659052, lng: 139.700285};
+  const hachi = {lat: 35.659107, lng: 139.700653};
   const map = new google.maps.Map(document.getElementById('map'), {
     center: tokyo,
     zoom: 12
