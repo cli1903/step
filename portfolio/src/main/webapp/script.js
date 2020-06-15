@@ -107,7 +107,7 @@ async function setComments() {
     const errString =
         'Invalid input for num-comments: please enter an integer between ' +
         minComments + ' and ' + maxComments;
-        
+
     const errMssg = createErrorMssg(errString);
     commentContainer.appendChild(errMssg);
     return;
@@ -182,9 +182,8 @@ function shouldHideElement(container, hide) {
 
 function initMap() {
   console.log('here');
-  const map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 35.668, lng: 139.723 },
-    zoom: 12
-  });
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 35.668, lng: 139.723}, zoom: 12});
   console.log('done');
 }

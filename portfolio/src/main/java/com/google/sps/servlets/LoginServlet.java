@@ -60,6 +60,6 @@ public class LoginServlet extends HttpServlet {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       response.setContentType("text/html");
       response.getWriter().println("error logging in");
-    } 
+    }
   }
 }
