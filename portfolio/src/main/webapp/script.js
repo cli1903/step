@@ -175,10 +175,8 @@ function initMap() {
 
 function addMarker() {
   const shouldAddMarker = document.getElementById('add-marker').value
-  console.log(shouldAddMarker)
 
   if (shouldAddMarker === 'true') {
-    console.log('here');
     map.addListener('click', function(mapsMouseEvent) {
       const newMarker =
           new google.maps.Marker({position: mapsMouseEvent.latLng, map: map});
@@ -278,10 +276,8 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           if (mode === 'ORIG') {            
             me.originPlace = results[0];
-            console.log(me.originPlace);
           } else {
             me.destinationPlace = results[0];
-            console.log(me.destinationPlace);
           }
 
           me.route();
@@ -307,9 +303,6 @@ AutocompleteDirectionsHandler.prototype.route =
 
   let originVal;
   let destinationVal;
-
-  console.log(this.originPlace);
-  console.log(this.destinationPlace);
 
   if (!this.originPlace) {
     if (!this.originPlaceId) {
