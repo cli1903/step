@@ -23,6 +23,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +33,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
 
 @Singleton
 public class DataDeleteServlet extends HttpServlet {
@@ -46,7 +46,8 @@ public class DataDeleteServlet extends HttpServlet {
   }
 
   @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     Query commentQuery = new Query("Comment");
     PreparedQuery results = datastore.prepare(commentQuery);
 

@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,15 +31,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.inject.Singleton;
-import com.google.inject.Inject;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @Singleton
 public class DataServlet extends HttpServlet {
   private final DatastoreService datastore;
-  private final Gson gson; 
-  
+  private final Gson gson;
+
   private static final String COMMENT_TEXT_PARAM = "comment";
   private static final String COMMENT_NAME_PARAM = "name";
   private static final String COMMENT_NUM_PARAM = "num-comments";
@@ -51,8 +51,6 @@ public class DataServlet extends HttpServlet {
     this.datastore = datastore;
     this.gson = gson;
   }
-
-  
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -75,7 +73,6 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/comments.html");
   }
 
-  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int num_comments;

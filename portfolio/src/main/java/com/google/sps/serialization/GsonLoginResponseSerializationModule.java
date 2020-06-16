@@ -7,7 +7,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.sps.data.LoginResponse;
 
-
 public class GsonLoginResponseSerializationModule extends AbstractModule {
   @Provides
   @Singleton
