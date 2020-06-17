@@ -212,6 +212,9 @@ function AutocompleteDirectionsHandler(map) {
   var originInput = document.getElementById('origin-input');
   var destinationInput = document.getElementById('destination-input');
   var modeSelector = document.getElementById('mode-selector');
+  var directionsSteps = document.getElementById('directions');
+
+  this.directionsRenderer.setPanel(directionsSteps);
 
   var originAutocomplete = new google.maps.places.Autocomplete(originInput);
   // Specify just the place data fields that you need.

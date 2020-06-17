@@ -57,6 +57,7 @@ body {
   width: 100%;
   position: fixed;
   top: 0;
+  z-index: 1;
 }
 
 .nav a {
@@ -209,7 +210,7 @@ textarea {
   margin: 20px;
 }
 
-#directions {
+#directions-section {
   display: none;
 }
 
