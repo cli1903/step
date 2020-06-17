@@ -154,7 +154,7 @@ function initMap() {
   const hachi = {lat: 35.659107, lng: 139.700653};
   map = new google.maps.Map(
       document.getElementById('map'), 
-      {center: tokyo, zoom: 12, mapTypeControl: false});
+      {center: tokyo, zoom: 12});
 
   const marker = new google.maps.Marker({position: hachi, map: map})
 
@@ -229,10 +229,11 @@ function AutocompleteDirectionsHandler(map) {
   this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
   this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
 
-  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
       destinationInput);
-  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+  
 }
 
 // Sets a listener on a radio button to change the filter type on Places
