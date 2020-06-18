@@ -39,44 +39,91 @@ public final class FindMeetingQuery {
 
     Collections.sort(eventsArray, compareByEventStart);
 
-    // collection of available meeting times
-    Collection<TimeRange> openTimes = new ArrayList<>();
+    Collection<String> requestedEventAttendees = request.getAttendees();
 
-    // initial available time: the entire day
-    int start = TimeRange.START_OF_DAY;
+    // collection of available meeting times
+    Collection<TimeRange> openTimesRequiredAttendees = new ArrayList<>();
+    Collection<TimeRange> openTimesOptionalAttendees = new ArrayList<>();
+
+    // keep track of when the next block of free time starts for requried 
+    // attendees and optional attendees
+    int requiredAttendeesStart = TimeRange.START_OF_DAY;
+    int optionalAttendeesStart = TimeRange.START_OF_DAY;
+
     int end = TimeRange.END_OF_DAY;
 
     for (Event event: eventsArray) {
-      TimeRange tryTime = TimeRange.fromStartEnd(start, end, true);
+      // try largest block of free time
+      TimeRange tryTime = TimeRange.fromStartEnd(requiredAttendeesStart, end, true);
 
       if (tryTime.overlaps(event.getWhen())) {
-        // get lists of event attendees
-        Collection<String> requestedEventAttendees = request.getAttendees();
-        Set<String> scheduledEventAttendees = event.getAttendees();
-        
-        for (String attendee: requestedEventAttendees) {
-          // check for overlapping attendees
-          if (scheduledEventAttendees.contains(attendee)) {
-            int newEnd = event.getWhen().start();
+        // get lists of the current event attendees
+        Set<String> eventAttendees = event.getAttendees();
 
-            // see if meeting can be scheduled between start and conflicting event
-            if (newEnd - start >= request.getDuration()) {
-              openTimes.add(TimeRange.fromStartEnd(start, newEnd, false));
+
+        if (checkConflictingAttendees(requestedEventAttendees, eventAttendees)) {
+          int endOfFreeTime = event.getWhen().start();
+          if (endOfFreeTime - requiredAttendeesStart >= request.getDuration()) {
+            openTimesRequiredAttendees.add(TimeRange.fromStartEnd(requiredAttendeesStart, endOfFreeTime, false));
+          }
+
+          if (endOfFreeTime - optionalAttendeesStart >= request.getDuration()) {
+            openTimesOptionalAttendees.add(TimeRange.fromStartEnd(optionalAttendeesStart, endOfFreeTime, false));
+          }
+
+          requiredAttendeesStart = event.getWhen().end();
+
+          if (optionalAttendeesStart < event.getWhen().end()) {
+            optionalAttendeesStart = event.getWhen().end();
+          }
+
+        } else {
+          // required attendees are all free, check if optional attendees are also free
+          Collection<String> optionalEventAttendees = request.getOptionalAttendees();
+          if (checkConflictingAttendees(optionalEventAttendees, eventAttendees)) {
+            int endOfFreeTime = event.getWhen().start();
+            if (endOfFreeTime - optionalAttendeesStart >= request.getDuration()) {
+              openTimesOptionalAttendees.add(TimeRange.fromStartEnd(optionalAttendeesStart, endOfFreeTime, false));
             }
 
-            start = event.getWhen().end();
-            break;
+            optionalAttendeesStart = event.getWhen().end();
           }
+
         }
+
       }
     }
 
     // see if meeting can be scheduled from start to end of day
-    if (end - start >= request.getDuration()) {
-      openTimes.add(TimeRange.fromStartEnd(start, end, true));
+    if (end - requiredAttendeesStart >= request.getDuration()) {
+      openTimesRequiredAttendees.add(TimeRange.fromStartEnd(requiredAttendeesStart, end, true));
     }
 
-    return openTimes;
+    if (end - optionalAttendeesStart >= request.getDuration()) {
+      openTimesOptionalAttendees.add(TimeRange.fromStartEnd(optionalAttendeesStart, end, true));
+    }
 
+    if (openTimesOptionalAttendees.isEmpty()) {
+      if (requestedEventAttendees.isEmpty()) {
+        return new ArrayList<>();
+      }
+      return openTimesRequiredAttendees;
+    } else {
+      return openTimesOptionalAttendees;
+    }
+  }
+
+  public boolean checkConflictingAttendees(Collection<String> eventAttendees, 
+      Set<String> requestedAttendees) {
+
+    for (String attendee: eventAttendees) {
+      if (requestedAttendees.contains(attendee)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
+
+
