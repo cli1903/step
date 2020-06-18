@@ -311,8 +311,10 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           if (mode === 'ORIG') {            
             me.originPlace = results[0];
+            me.originPlaceId = null;
           } else {
             me.destinationPlace = results[0];
+            me.destinationPlaceId = null;
           }
 
           me.route();
@@ -322,8 +324,10 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
     } else {
       if (mode === 'ORIG') {
         me.originPlaceId = place.place_id;
+        me.originPlace = null;
       } else {
         me.destinationPlaceId = place.place_id;
+        me.destinationPlace = null;
       }
       me.route();
     }
@@ -341,6 +345,7 @@ AutocompleteDirectionsHandler.prototype.route =
 
   if (!this.originPlace) {
     if (!this.originPlaceId) {
+      console.log("here")
       return;
     } else {
       originVal = getProperPlaceVal(this.originPlaceId, true);
@@ -358,6 +363,9 @@ AutocompleteDirectionsHandler.prototype.route =
   } else {
     destinationVal = getProperPlaceVal(this.destinationPlace, false);
   }
+
+  console.log(originVal);
+  console.log(destinationVal);
 
   this.directionsService.route(
     {
