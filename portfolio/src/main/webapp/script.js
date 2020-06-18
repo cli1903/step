@@ -54,22 +54,30 @@ function addRandomDestination() {
 
 async function setPage() {
   const loginResponse = await fetch('/login', {method: 'POST'});
-  const loginJson = await loginResponse.json();
-  addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
 
-  const customContainer = document.getElementById('custom-elements');
-  const formContainer = document.getElementById('comment-form');
+  if (loginResponse.ok) {
+    const loginJson = await loginResponse.json();
+    addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
 
-  if (loginJson.isLoggedIn) {
-    shouldHideElement(customContainer, false);
-    shouldHideElement(formContainer, false);
-    setComments();
+    const customContainer = document.getElementById('custom-elements');
+    const formContainer = document.getElementById('comment-form');
 
+    if (loginJson.isLoggedIn) {
+      shouldHideElement(customContainer, false);
+      shouldHideElement(formContainer, false);
+      setComments();
+
+    } else {
+      shouldHideElement(customContainer, true);
+      shouldHideElement(formContainer, true);
+      const commentContainer = document.getElementById('comments-container');
+      const errElement = createErrorMssg('Please log in to see comments.');
+      commentContainer.appendChild(errElement);
+    }
   } else {
-    shouldHideElement(customContainer, true);
-    shouldHideElement(formContainer, true);
+    loginText = await loginResponse.text()
     const commentContainer = document.getElementById('comments-container');
-    const errElement = createErrorMssg('Please log in to see comments.');
+    const errElement = createErrorMssg(loginText);
     commentContainer.appendChild(errElement);
   }
 }
@@ -99,7 +107,7 @@ async function setComments() {
     const errString =
         'Invalid input for num-comments: please enter an integer between ' +
         minComments + ' and ' + maxComments;
-        
+
     const errMssg = createErrorMssg(errString);
     commentContainer.appendChild(errMssg);
     return;
