@@ -76,6 +76,10 @@ public class DatastoreCommentStorage implements CommentStorage {
     String text = (String) entity.getProperty(ENTITY_TEXT_PARAM);
     long timePosted = (long) entity.getProperty(ENTITY_TIME_PARAM);
 
-    return Comment.builder().setName(name).setText(text).setTimePosted(timePosted).build();
+    return Comment.builder()
+      .setName(name)
+      .setText(text)
+      .setTimePosted(timePosted)
+      .build();
   }
 }

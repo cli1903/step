@@ -181,9 +181,24 @@ function shouldHideElement(container, hide) {
 }
 
 function initMap() {
-  console.log('here');
-  const map = new google.maps.Map(
-      document.getElementById('map'),
-      {center: {lat: 35.668, lng: 139.723}, zoom: 12});
-  console.log('done');
+  const tokyo = {lat: 35.668, lng: 139.723};
+  const hachi = {lat: 35.659107, lng: 139.700653};
+  const map = new google.maps.Map(document.getElementById('map'), {
+    center: tokyo,
+    zoom: 12
+  });
+
+  const marker = new google.maps.Marker({position: hachi, map: map})
+
+  hachiString = '<div id="hachi-content"> <h1> Statue of Hachiko </h1>' + 
+    '<p> a very good boi </p>' + 
+    '<p> For actual info on Hachiko, visit his' + 
+    '<a href="https://en.wikipedia.org/wiki/Hachik%C5%8D"> Wikipedia page </a>' + 
+    '</p> </div>';
+
+  var infowindow = new google.maps.InfoWindow({content: hachiString});
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  })
 }
