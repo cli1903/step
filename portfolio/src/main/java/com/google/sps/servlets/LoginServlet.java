@@ -43,16 +43,23 @@ public class LoginServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     LoginResponse.Builder logInOutBuilder = LoginResponse.builder();
 
-    if (userService.isUserLoggedIn()) {
-      String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_TO);
-      logInOutBuilder = logInOutBuilder.setUrl(logoutUrl).setIsLoggedIn(true);
-    } else {
-      String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_TO);
-      logInOutBuilder = logInOutBuilder.setUrl(loginUrl).setIsLoggedIn(false);
-    }
+    try {
+      if (userService.isUserLoggedIn()) {
+        String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_TO);
+        logInOutBuilder = logInOutBuilder.setUrl(logoutUrl).setIsLoggedIn(true);
+      } else {
+        String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_TO);
+        logInOutBuilder = logInOutBuilder.setUrl(loginUrl).setIsLoggedIn(false);
+      }
 
-    String json = gson.toJson(logInOutBuilder.build());
-    response.setContentType("application/json");
-    response.getWriter().println(json);
+      String json = gson.toJson(logInOutBuilder.build());
+      response.setContentType("application/json");
+      response.getWriter().println(json);
+
+    } catch (Exception e) {
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.setContentType("text/html");
+      response.getWriter().println("error logging in");
+    }
   }
 }
