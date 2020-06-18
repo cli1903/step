@@ -17,11 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.sps.data.LoginResponse;
-import com.google.sps.serialization.GsonLoginResponseAdapter;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,25 +41,25 @@ public class LoginServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    /**
-     * remove this builder once this uses Guice
-     */
-    GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(LoginResponse.class, new GsonLoginResponseAdapter());
-    Gson gson = builder.create();
-
     LoginResponse.Builder logInOutBuilder = LoginResponse.builder();
 
-    if (userService.isUserLoggedIn()) {
-      String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_TO);
-      logInOutBuilder = logInOutBuilder.setUrl(logoutUrl).setIsLoggedIn(true);
-    } else {
-      String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_TO);
-      logInOutBuilder = logInOutBuilder.setUrl(loginUrl).setIsLoggedIn(false);
-    }
+    try {
+      if (userService.isUserLoggedIn()) {
+        String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_TO);
+        logInOutBuilder = logInOutBuilder.setUrl(logoutUrl).setIsLoggedIn(true);
+      } else {
+        String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_TO);
+        logInOutBuilder = logInOutBuilder.setUrl(loginUrl).setIsLoggedIn(false);
+      }
 
-    String json = gson.toJson(logInOutBuilder.build());
-    response.setContentType("application/json");
-    response.getWriter().println(json);
+      String json = gson.toJson(logInOutBuilder.build());
+      response.setContentType("application/json");
+      response.getWriter().println(json);
+
+    } catch (Exception e) {
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.setContentType("text/html");
+      response.getWriter().println("error logging in");
+    }
   }
 }
