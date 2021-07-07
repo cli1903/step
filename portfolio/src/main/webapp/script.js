@@ -54,7 +54,6 @@ function addRandomDestination() {
 
 async function setPage() {
   const loginResponse = await fetch('/login', {method: 'POST'});
-
   if (loginResponse.ok) {
     const loginJson = await loginResponse.json();
     addLogInOutButton(loginJson.url, loginJson.isLoggedIn);
@@ -180,25 +179,182 @@ function shouldHideElement(container, hide) {
   }
 }
 
+let map;
 function initMap() {
   const tokyo = {lat: 35.668, lng: 139.723};
   const hachi = {lat: 35.659107, lng: 139.700653};
-  const map = new google.maps.Map(document.getElementById('map'), {
-    center: tokyo,
-    zoom: 12
-  });
+  map = new google.maps.Map(
+      document.getElementById('map'), 
+      {center: tokyo, zoom: 12});
 
   const marker = new google.maps.Marker({position: hachi, map: map})
 
-  hachiString = '<div id="hachi-content"> <h1> Statue of Hachiko </h1>' + 
-    '<p> a very good boi </p>' + 
-    '<p> For actual info on Hachiko, visit his' + 
-    '<a href="https://en.wikipedia.org/wiki/Hachik%C5%8D"> Wikipedia page </a>' + 
-    '</p> </div>';
+  hachiString = '<div id="hachi-content"> <h1> Statue of Hachiko </h1>' +
+      '<p> a very good boi </p>' +
+      '<p> For actual info on Hachiko, visit his' +
+      '<a href="https://en.wikipedia.org/wiki/Hachik%C5%8D"> Wikipedia page </a>' +
+      '</p> </div>';
 
   var infowindow = new google.maps.InfoWindow({content: hachiString});
 
   marker.addListener('click', function() {
     infowindow.open(map, marker);
-  })
+  });
+
+  new AutocompleteDirectionsHandler(map);
+}
+
+function addMarker() {
+  const shouldAddMarker = document.getElementById('add-marker').value
+
+  if (shouldAddMarker === 'true') {
+    map.addListener('click', function(mapsMouseEvent) {
+      const newMarker =
+          new google.maps.Marker({position: mapsMouseEvent.latLng, map: map});
+    });
+  }
+  else {
+    google.maps.event.clearListeners(map, 'click');
+  }
+}
+
+// START OF DIRECTIONS CODE
+
+// This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script
+// src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+
+/**
+ * @constructor
+ */
+function AutocompleteDirectionsHandler(map) {
+  this.map = map;
+  this.originPlaceId = null;
+  this.destinationPlaceId = null;
+  this.travelMode = 'WALKING';
+  this.directionsService = new google.maps.DirectionsService;
+  this.directionsRenderer = new google.maps.DirectionsRenderer;
+  this.directionsRenderer.setMap(map);
+
+  var originInput = document.getElementById('origin-input');
+  var destinationInput = document.getElementById('destination-input');
+  var modeSelector = document.getElementById('mode-selector');
+  var directionsSteps = document.getElementById('directions');
+
+  this.directionsRenderer.setPanel(directionsSteps);
+
+  var originAutocomplete = new google.maps.places.Autocomplete(originInput);
+  // Specify just the place data fields that you need.
+  originAutocomplete.setFields(['place_id']);
+
+  var destinationAutocomplete =
+      new google.maps.places.Autocomplete(destinationInput);
+  // Specify just the place data fields that you need.
+  destinationAutocomplete.setFields(['place_id']);
+
+  this.setupClickListener('changemode-walking', 'WALKING');
+  this.setupClickListener('changemode-transit', 'TRANSIT');
+  this.setupClickListener('changemode-driving', 'DRIVING');
+
+  this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+  this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(modeSelector);
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+      destinationInput);
+  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+  
+}
+
+// Sets a listener on a radio button to change the filter type on Places
+// Autocomplete.
+AutocompleteDirectionsHandler.prototype.setupClickListener = function(
+    id, mode) {
+  var radioButton = document.getElementById(id);
+  var me = this;
+
+  radioButton.addEventListener('click', function() {
+    me.travelMode = mode;
+    me.route();
+  });
+};
+
+AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
+    autocomplete, mode) {
+  var me = this;
+  autocomplete.bindTo('bounds', this.map);
+
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+
+    if (!place.place_id) {
+      let placeText;
+
+      if (mode == 'ORIG') {
+        placeText = document.getElementById('origin-input').value;
+      } else {
+        placeText = document.getElementById('destination-input').value;
+      }
+
+      service = new google.maps.places.PlacesService(me.map);
+
+      var request = {
+        query: placeText,
+        fields: ['place_id'],
+      };
+
+      var placeId;
+
+      service.findPlaceFromQuery(request, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          if (mode === 'ORIG') {
+            me.originPlaceId = results[0].place_id;
+          } else {
+            me.destinationPlaceId = results[0].place_id;
+          }
+        }
+
+        me.route();
+      });
+      return;
+    }
+
+    if (mode === 'ORIG') {
+      me.originPlaceId = place.place_id;
+    } else {
+      me.destinationPlaceId = place.place_id;
+    }
+    me.route();
+    
+  });
+};
+
+AutocompleteDirectionsHandler.prototype.route = function() {
+  var me = this;
+
+  if (!this.originPlaceId) {
+    return;
+  }
+  
+  if (!this.destinationPlaceId) {
+    return;
+  }
+
+  this.directionsService.route(
+    {
+      origin: {'placeId': this.originPlaceId},
+      destination: {'placeId': this.destinationPlaceId},
+      travelMode: this.travelMode
+    },
+    function(response, status) {
+      if (status === 'OK') {
+        me.directionsRenderer.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    }
+  );
+
 }

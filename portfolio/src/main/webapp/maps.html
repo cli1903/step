@@ -2,7 +2,7 @@
 <html>
 <head>
   <title> Map </title>
-  <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ5nD1n3osPyQHjdY1bCE6i887N32UTLM&libraries=places"></script>
   <script src="script.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +17,34 @@
   </div>
   <div id="content">
     <h1 class="title"> My Notable Locations </h1>
-    <div id="map"></div>
+    <div>
+      <select id="add-marker" name="add-marker" onchange="addMarker()">
+        <option value="false"> Regular mouse </option>
+        <option value="true"> Add your own marker </option>
+      </select>
+
+      <div id="directions-section">
+        <input id="origin-input" class="controls" type="text"
+            placeholder="Enter an origin location">
+
+        <input id="destination-input" class="controls" type="text"
+            placeholder="Enter a destination location">
+
+        <div id="mode-selector" class="controls">
+          <input type="radio" name="type" id="changemode-walking" checked="checked">
+          <label for="changemode-walking">Walking</label>
+
+          <input type="radio" name="type" id="changemode-transit">
+          <label for="changemode-transit">Transit</label>
+
+          <input type="radio" name="type" id="changemode-driving">
+          <label for="changemode-driving">Driving</label>
+        </div>
+      </div>
+
+      <div id="map"></div>
+      <div id="directions"></div>
+    </div>
   </div>
 </body>
 </html>

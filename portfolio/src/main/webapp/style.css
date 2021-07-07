@@ -57,6 +57,7 @@ body {
   width: 100%;
   position: fixed;
   top: 0;
+  z-index: 1;
 }
 
 .nav a {
@@ -204,7 +205,24 @@ textarea {
 
 #map {
   border: thin solid black;
-  height: 500px;
-  width: 500px;
+  height: 1000px;
+  width: 1000px;
   margin: 20px;
+}
+
+#directions-section {
+  display: none;
+}
+
+.controls {
+  margin-top: 10px;
+  margin-right: 5px;
+  height: 32px;
+}
+
+#mode-selector {
+  background-color: #4d90fe;
+  padding: 8px 5px 0px;
+  font-size: 14px;
+  color: white;
 }
